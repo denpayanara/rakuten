@@ -387,7 +387,7 @@ folium.plugins.Draw(
 # In[264]:
 
 
-map_path = pathlib.Path("map", "index.html")
+map_path = pathlib.Path("map", "map.html")
 
 # map_path.parent.mkdir(parents=True, exist_ok=True)
 
