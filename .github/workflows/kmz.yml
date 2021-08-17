@@ -5,21 +5,12 @@ on:
     types: [on-demand-test]
   schedule:
     - cron:  '0 22 * * *'
-
+    
 jobs:
-  build:
+  wget:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-
-
-    - name: Run script
-      run: |
-        wget -O requirements.txt https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5yTYaZX7YOA0bTx_DYShEVCBXqKntpOyHdBDJWVODzfcXAjpoBDScrMaVF1VSfYMcREZb3E30E0ha/pub?gid=630053475&single=true&output=tsv
-        wget -i requirements.txt
-    - name: deploy
-      uses: peaceiris/actions-gh-pages@v3
+    - name: wget
+      uses: wei/wget@v1
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./KMZ
-        publish_branch: gh-pages
+        args: -O requirements.txt https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5yTYaZX7YOA0bTx_DYShEVCBXqKntpOyHdBDJWVODzfcXAjpoBDScrMaVF1VSfYMcREZb3E30E0ha/pub?gid=630053475&single=true&output=tsv
