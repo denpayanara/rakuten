@@ -5,16 +5,17 @@ on:
     types: [on-demand-test]
   schedule:
     - cron:  '0 22 * * *'
-    
+
 jobs:
-  wget:
+  build:
     runs-on: ubuntu-latest
     steps:
-    - name: wget
-      uses: wei/wget@v1
-      with:
-        args: -O requirements.txt https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5yTYaZX7YOA0bTx_DYShEVCBXqKntpOyHdBDJWVODzfcXAjpoBDScrMaVF1VSfYMcREZb3E30E0ha/pub?gid=630053475&single=true&output=tsv
+    - uses: actions/checkout@v2
 
+
+    - name: Run script
+      run: |
+        wget -O test.txt https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5yTYaZX7YOA0bTx_DYShEVCBXqKntpOyHdBDJWVODzfcXAjpoBDScrMaVF1VSfYMcREZb3E30E0ha/pub?gid=448594199&single=true&output=tsv
     - name: deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
