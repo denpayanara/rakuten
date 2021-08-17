@@ -1,5 +1,4 @@
 name: KMZ Update
-
 on:
   workflow_dispatch:
   repository_dispatch:
