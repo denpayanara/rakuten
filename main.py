@@ -393,3 +393,9 @@ map_path = pathlib.Path("map", "map.html")
 
 map.save(str(map_path))
 
+wget 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5yTYaZX7YOA0bTx_DYShEVCBXqKntpOyHdBDJWVODzfcXAjpoBDScrMaVF1VSfYMcREZb3E30E0ha/pub?gid=630053475&single=true&output=tsv' -O requirements.txt
+wget -i requirements.txt -O cell.kmz
+
+kmz_path = pathlib.Path("map", "cell.kmz")
+
+kmz.savekmz(kmz_path)
