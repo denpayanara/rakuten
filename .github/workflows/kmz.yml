@@ -16,7 +16,7 @@ jobs:
     - name: Run script
       run: |
         wget -O requirements.txt https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5yTYaZX7YOA0bTx_DYShEVCBXqKntpOyHdBDJWVODzfcXAjpoBDScrMaVF1VSfYMcREZb3E30E0ha/pub?gid=630053475&single=true&output=tsv
-        wget -i requirements.txt -O cell.kmz
+        wget -i requirements.txt
     - name: deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
