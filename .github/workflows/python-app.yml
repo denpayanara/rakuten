@@ -17,6 +17,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Run script
+      run: |
+        wget -O ./map/requirements.txt.text "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5yTYaZX7YOA0bTx_DYShEVCBXqKntpOyHdBDJWVODzfcXAjpoBDScrMaVF1VSfYMcREZb3E30E0ha/pub?gid=448594199&single=true&output=tsv"
+        wget -i ./map/requirements.txt.text -O ./map/celldata_nara.kmz
+    
     - name: Set up Python 3.9
       uses: actions/setup-python@v2
       with:
