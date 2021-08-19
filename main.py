@@ -441,6 +441,6 @@ for i, r in df.iterrows():
     pnt.extendeddata = ex_data
     
 # mapフォルダに保存
-kmz_path = pathlib.Path("map", "celldata_nara_simplekml.kmz")
+kmz_path = pathlib.Path("map", "celldata_nara.kmz")
 
 kml.savekmz(kmz_path)
