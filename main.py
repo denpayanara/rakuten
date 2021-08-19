@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # coding: utf-8
 
 import pathlib
@@ -82,19 +81,21 @@ icon_indoor = "4G_indoor_OK.png"
 icon_not_set = "not_set.png"
 
 for i, r in df.iterrows():
+    
+    # popupの説明内容
+    html = ('名称: ' f'{r["名称"]}<br>'
+    'eNB-LCID: ' f'{r["eNB-LCID"]}<br>'
+    '備考: ' f'{r["備考"]}<br>'
+    '設置形態: ' f'{r["設置形態"]}<br>'
+    '電力線: ' f'{r["電力線"]}<br>'
+    '光回線: ' f'{r["光回線"]}<br>'
+    '確認日: ' f'{r["確認日"]}<br>'
+    f' <a href="{r["URL"]}">Googleマップへ</a><br>')
+    
     if r["アイコン種別"] == "4G_OK":
         folium.Marker(
         location = [ r["lat"], r["lng"] ],
-        popup = folium.Popup(
-        '名称: ' f'{r["名称"]}<br>'
-        'eNB-LCID: ' f'{r["eNB-LCID"]}<br>'
-        '備考: ' f'{r["備考"]}<br>'
-        '設置形態: ' f'{r["設置形態"]}<br>'
-        '電力線: ' f'{r["電力線"]}<br>'
-        '光回線: ' f'{r["光回線"]}<br>'
-        '確認日: ' f'{r["確認日"]}<br>'
-        f' <a href="{r["URL"]}">Googleマップへ</a><br>',
-        max_width=300),
+        popup = folium.Popup(html, max_width=300),
         icon = folium.features.CustomIcon(
             icon_ok,
             icon_size = (30, 30)
@@ -104,16 +105,7 @@ for i, r in df.iterrows():
     elif r["アイコン種別"] == "4G_NG":
         folium.Marker(
         location = [ r["lat"], r["lng"] ],
-        popup=folium.Popup(
-        '名称: ' f'{r["名称"]}<br>'
-        'eNB-LCID: ' f'{r["eNB-LCID"]}<br>'
-        '備考: ' f'{r["備考"]}<br>'
-        '設置形態: ' f'{r["設置形態"]}<br>'
-        '電力線: ' f'{r["電力線"]}<br>'
-        '光回線: ' f'{r["光回線"]}<br>'
-        '確認日: ' f'{r["確認日"]}<br>'
-        f' <a href="{r["URL"]}">Googleマップへ</a><br>',
-        max_width=300),
+        popup=folium.Popup(html, max_width=300),
         icon = folium.features.CustomIcon(
             icon_ng,
             icon_size = (30, 30)
@@ -123,16 +115,7 @@ for i, r in df.iterrows():
     elif r["アイコン種別"] == "4G+5G_OK":
         folium.Marker(
         location = [ r["lat"], r["lng"] ],
-        popup=folium.Popup(
-        '名称: ' f'{r["名称"]}<br>'
-        'eNB-LCID: ' f'{r["eNB-LCID"]}<br>'
-        '備考: ' f'{r["備考"]}<br>'
-        '設置形態: ' f'{r["設置形態"]}<br>'
-        '電力線: ' f'{r["電力線"]}<br>'
-        '光回線: ' f'{r["光回線"]}<br>'
-        '確認日: ' f'{r["確認日"]}<br>'
-        f' <a href="{r["URL"]}">Googleマップへ</a><br>',
-        max_width=300),
+        popup=folium.Popup(html, max_width=300),
         icon = folium.features.CustomIcon(
             icon_4G5G,
             icon_size = (30, 30)
@@ -142,16 +125,7 @@ for i, r in df.iterrows():
     elif r["アイコン種別"] == "5G_OK":
         folium.Marker(
         location = [ r["lat"], r["lng"] ],
-        popup=folium.Popup(
-        '名称: ' f'{r["名称"]}<br>'
-        'eNB-LCID: ' f'{r["eNB-LCID"]}<br>'
-        '備考: ' f'{r["備考"]}<br>'
-        '設置形態: ' f'{r["設置形態"]}<br>'
-        '電力線: ' f'{r["電力線"]}<br>'
-        '光回線: ' f'{r["光回線"]}<br>'
-        '確認日: ' f'{r["確認日"]}<br>'
-        f' <a href="{r["URL"]}">Googleマップへ</a><br>',
-        max_width=300),
+        popup=folium.Popup(html, max_width=300),
         icon = folium.features.CustomIcon(
             icon_4G5G,
             icon_size = (30, 30)
@@ -161,16 +135,7 @@ for i, r in df.iterrows():
     elif r["アイコン種別"] == "4G_OK(仮)":
         folium.Marker(
         location = [ r["lat"], r["lng"] ],
-        popup=folium.Popup(
-        '名称: ' f'{r["名称"]}<br>'
-        'eNB-LCID: ' f'{r["eNB-LCID"]}<br>'
-        '備考: ' f'{r["備考"]}<br>'
-        '設置形態: ' f'{r["設置形態"]}<br>'
-        '電力線: ' f'{r["電力線"]}<br>'
-        '光回線: ' f'{r["光回線"]}<br>'
-        '確認日: ' f'{r["確認日"]}<br>'
-        f' <a href="{r["URL"]}">Googleマップへ</a><br>',
-        max_width=300),
+        popup=folium.Popup(html, max_width=300),
         icon = folium.features.CustomIcon(
         icon_ok_tentative,
         icon_size = (30, 30)
@@ -180,16 +145,7 @@ for i, r in df.iterrows():
     elif r["アイコン種別"] == "4G_NG(仮)":
         folium.Marker(
         location = [ r["lat"], r["lng"] ],
-        popup=folium.Popup(
-        '名称: ' f'{r["名称"]}<br>'
-        'eNB-LCID: ' f'{r["eNB-LCID"]}<br>'
-        '備考: ' f'{r["備考"]}<br>'
-        '設置形態: ' f'{r["設置形態"]}<br>'
-        '電力線: ' f'{r["電力線"]}<br>'
-        '光回線: ' f'{r["光回線"]}<br>'
-        '確認日: ' f'{r["確認日"]}<br>'
-        f' <a href="{r["URL"]}">Googleマップへ</a><br>',
-        max_width=300),
+        popup=folium.Popup(html, max_width=300),
         icon = folium.features.CustomIcon(
             icon_ng_tentative,
             icon_size = (30, 30)
@@ -199,16 +155,7 @@ for i, r in df.iterrows():
     elif r["アイコン種別"] == "4G(屋内局)_OK":
         folium.Marker(
         location = [ r["lat"], r["lng"] ],
-        popup=folium.Popup(
-        '名称: ' f'{r["名称"]}<br>'
-        'eNB-LCID: ' f'{r["eNB-LCID"]}<br>'
-        '備考: ' f'{r["備考"]}<br>'
-        '設置形態: ' f'{r["設置形態"]}<br>'
-        '電力線: ' f'{r["電力線"]}<br>'
-        '光回線: ' f'{r["光回線"]}<br>'
-        '確認日: ' f'{r["確認日"]}<br>'
-        f' <a href="{r["URL"]}">Googleマップへ</a><br>',
-        max_width=300),
+        popup=folium.Popup(html, max_width=300),
         icon = folium.features.CustomIcon(
             icon_indoor,
             icon_size = (30, 30)
@@ -218,17 +165,7 @@ for i, r in df.iterrows():
     # アイコン区分未設定時の設定
     else:
         folium.Marker(location = [ r["lat"], r["lng"] ],
-        popup=folium.Popup(
-        '【未設定アイコン】<br>'
-        '名称: ' f'{r["名称"]}<br>'
-        'eNB-LCID: ' f'{r["eNB-LCID"]}<br>'
-        '備考: ' f'{r["備考"]}<br>'
-        '設置形態: ' f'{r["設置形態"]}<br>'
-        '電力線: ' f'{r["電力線"]}<br>'
-        '光回線: ' f'{r["光回線"]}<br>'
-        '確認日: ' f'{r["確認日"]}<br>'
-        f' <a href="{r["URL"]}">Googleマップへ</a><br>',
-        max_width=300),
+        popup=folium.Popup('【未設定アイコン】<br> '+html, max_width=300),
         icon = folium.features.CustomIcon(
             icon_not_set,
             icon_size = (30, 30)
