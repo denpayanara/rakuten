@@ -13,10 +13,8 @@ url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5yTYaZX7YOA0bTx_DYShEVC
 
 df = pd.read_csv(url).fillna("")
 
-# 行政区域シェイプファイル読み込み
-bound_shape = gpd.read_file("N03-21_29_210101.shp", encoding="shift-jis")
-bound_shape.crs = "EPSG:6668"
-bound_shape_name_change = bound_shape.rename(columns={'N03_004': '市区町村名'})
+# 行政区域_geojsonファイルの読み込み
+Area = "行政区域.geojson"
 
 # TAC_geojsonファイルの読み込み
 TAC = "TAC.geojson"
@@ -72,13 +70,13 @@ circle_group = folium.FeatureGroup(name="半径710m").add_to(map)
 cell_group = folium.FeatureGroup(name="基地局").add_to(map)
 
 # アイコン( folium & simplekml共通 )
-icon_ok = "4G_OK.png"
-icon_ng = "4G_NG.png"
-icon_4G5G = "4G+5G_OK.png" # 5G Onlyと共通
-icon_ok_tentative = "4G_OK_tentative.png"
-icon_ng_tentative = "4G_NG_tentative.png"
-icon_indoor = "4G_indoor_OK.png"
-icon_not_set = "not_set.png"
+icon_ok = "./icon/4G_OK.png"
+icon_ng = "./icon/4G_NG.png"
+icon_4G5G = "./icon/4G+5G_OK.png" # 5G Onlyと共通
+icon_ok_tentative = "./icon/4G_OK_tentative.png"
+icon_ng_tentative = "./icon/4G_NG_tentative.png"
+icon_indoor = "./icon/4G_indoor_OK.png"
+icon_not_set = "./icon/not_set.png"
 
 for i, r in df.iterrows():
     
@@ -199,18 +197,16 @@ folium.raster_layers.TileLayer(
 ).add_to(map)
 
 # 行政区域レイヤー
-folium.GeoJson(
-    data = bound_shape_name_change,
-    name = "行政区域",
-    show = False,
-    popup = folium.features.GeoJsonPopup(fields=['市区町村名']),
-    style_function = lambda x:{
-        'fillColor': '#000000',
-        'fillOpacity': 0,
-        'color' : '#000000',
-        'weight': 0.7
-    }
-).add_to(map)
+folium.features.GeoJson(data=Area,
+                        style_function = lambda x:{
+                            'fillColor': '#000000',
+                            'fillOpacity': 0,
+                            'color' : '#000000',
+                            'weight': 0.7},
+                        name="行政区域(出典：国土交通省)",
+                        show=False,
+                        popup = folium.features.GeoJsonPopup(["市区町村名"])
+                       ).add_to(map)
 
 # TACポリゴンのスタイル指定
 def style(feature):
@@ -223,7 +219,7 @@ def style(feature):
 # TACポリゴン
 folium.features.GeoJson(data=TAC,
                         style_function=style,
-                        name="TAC",
+                        name="TAC(行政区域データ(国土交通省)を加工)",
                         show=False,
                         popup = folium.features.GeoJsonPopup(["TAC"])
                        ).add_to(map)
