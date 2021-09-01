@@ -192,7 +192,7 @@ folium.raster_layers.TileLayer(
     tms=False,
     overlay=True,
     control=True,
-    opacity=0.8,
+    opacity=1.0,
     show=False,
 ).add_to(map)
 
