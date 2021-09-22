@@ -76,6 +76,7 @@ icon_4G5G = "./icon/4G+5G_OK.png" # 5G Onlyと共通
 icon_ok_tentative = "./icon/4G_OK_tentative.png"
 icon_ng_tentative = "./icon/4G_NG_tentative.png"
 icon_indoor = "./icon/4G_indoor_OK.png"
+icon_unknown = "./icon/unknown.png"
 icon_not_set = "./icon/not_set.png"
 
 for i, r in df.iterrows():
@@ -88,6 +89,7 @@ for i, r in df.iterrows():
     '電力線: ' f'{r["電力線"]}<br>'
     '光回線: ' f'{r["光回線"]}<br>'
     '確認日: ' f'{r["確認日"]}<br>'
+    f' <a href="{r["tweet"]}">ツイートへ</a><br>'
     f' <a href="{r["URL"]}">Googleマップへ</a><br>')
     
     if r["アイコン種別"] == "4G_OK":
@@ -159,6 +161,16 @@ for i, r in df.iterrows():
             icon_size = (30, 30)
         )
         ).add_to(cell_group)
+
+    elif r["アイコン種別"] == "4G_OK(未知局)":
+        folium.Marker(
+        location = [ r["lat"], r["lng"] ],
+        popup=folium.Popup(html, max_width=300),
+        icon = folium.features.CustomIcon(
+            icon_unknown,
+            icon_size = (30, 30)
+        )
+        ).add_to(cell_group)
         
     # アイコン区分未設定時の設定
     else:
@@ -173,7 +185,7 @@ for i, r in df.iterrows():
 cell_group.add_to(map)
 
 # 半径710mサークル
-for _, r in df[df["設置形態"] != "屋内局"].iterrows():
+for _, r in df[ (df["設置形態"] != "屋内局") & (df["アイコン種別"] != "4G_OK(未知局)") ].iterrows():
     circle_group.add_child(
         folium.vector_layers.Circle(
         location = [ r["lat"], r["lng"] ],
@@ -257,6 +269,7 @@ ok_5G_img = kml.addfile(icon_4G5G)
 ok_tentative_img = kml.addfile(icon_ok_tentative)
 ng_tentative_img = kml.addfile(icon_ng_tentative)
 indoor_img = kml.addfile(icon_indoor)
+unknown_img = kml.addfile(icon_unknown)
 not_set_img = kml.addfile(icon_not_set)
 
 # 4G_OKノーマルスタイル
@@ -364,6 +377,21 @@ indoor_stylemap = simplekml.StyleMap()
 indoor_stylemap.normalstyle = indoor_normal
 indoor_stylemap.highlightstyle = indoor_highlight
 
+# unknownノーマルスタイル
+unknown_normal = simplekml.Style()
+unknown_normal.iconstyle.scale = 1
+unknown_normal.iconstyle.icon.href = unknown_img
+
+# unknownハイライトスタイル
+unknown_highlight = simplekml.Style()
+unknown_highlight.iconstyle.scale = 1
+unknown_highlight.iconstyle.icon.href = unknown_img
+
+# unknownスタイルマップ
+unknown_stylemap = simplekml.StyleMap()
+unknown_stylemap.normalstyle = unknown_normal
+unknown_stylemap.highlightstyle = unknown_highlight
+
 # not_setノーマルスタイル
 not_set_normal = simplekml.Style()
 not_set_normal.iconstyle.scale = 1
@@ -386,6 +414,7 @@ kml.document.stylemaps.append(ok_5G_stylemap)
 kml.document.stylemaps.append(ok_tentative_stylemap)
 kml.document.stylemaps.append(ng_tentative_stylemap)
 kml.document.stylemaps.append(indoor_stylemap)
+kml.document.stylemaps.append(unknown_stylemap)
 kml.document.stylemaps.append(not_set_stylemap)
 
 fol = kml.newfolder()
@@ -423,11 +452,15 @@ for i, r in df.iterrows():
     elif r["アイコン種別"] == "4G(屋内局)_OK":
         
         pnt.stylemap = kml.document.stylemaps[6]
+
+    elif r["アイコン種別"] == "4G_OK(未知局)":
+        
+        pnt.stylemap = kml.document.stylemaps[7]
         
     # アイコン未設定時の設定    
     else:
         
-        pnt.stylemap = kml.document.stylemaps[7]
+        pnt.stylemap = kml.document.stylemaps[8]
     
     ex_data = simplekml.ExtendedData()
     
