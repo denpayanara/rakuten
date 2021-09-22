@@ -80,6 +80,12 @@ icon_unknown = "./icon/unknown.png"
 icon_not_set = "./icon/not_set.png"
 
 for i, r in df.iterrows():
+
+    # tweetリンク有無の処理
+    if r["tweet"] != "":
+        tweet_link = f' <a href="{r["tweet"]}">ツイートへ</a><br>'
+    else:
+        tweet_link = ""
     
     # popupの説明内容
     html = ('名称: ' f'{r["名称"]}<br>'
@@ -89,7 +95,7 @@ for i, r in df.iterrows():
     '電力線: ' f'{r["電力線"]}<br>'
     '光回線: ' f'{r["光回線"]}<br>'
     '確認日: ' f'{r["確認日"]}<br>'
-    f' <a href="{r["tweet"]}">ツイートへ</a><br>'
+    + tweet_link +
     f' <a href="{r["URL"]}">Googleマップへ</a><br>')
     
     if r["アイコン種別"] == "4G_OK":
