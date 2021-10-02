@@ -201,10 +201,23 @@ for _, r in df[ (df["設置形態"] != "屋内局") & (df["アイコン種別"] 
         )
     ).add_to(map)
     
-# 楽天モバイルエリアマップレイヤー
+# 楽天モバイルエリア4Gマップレイヤー
 folium.raster_layers.TileLayer(
-    name="楽天モバイルエリア",
+    name="(4G)楽天モバイルエリア",
     tiles='https://gateway-api.global.rakuten.com/dsd/geoserver/4g2m/mno_coverage_map/gwc/service/gmaps?LAYERS=mno_coverage_map:all_map&FORMAT=image/png&TRANSPARENT=TRUE&x={x}&y={y}&zoom={z}',
+    fmt='image/png',
+    attr="<a href='https://network.mobile.rakuten.co.jp/'>楽天モバイル</a>",
+    tms=False,
+    overlay=True,
+    control=True,
+    opacity=1.0,
+    show=False,
+).add_to(map)
+
+# 楽天モバイルエリア5Gマップレイヤー
+folium.raster_layers.TileLayer(
+    name="(5G)楽天モバイルエリア",
+    tiles='https://gateway-api.global.rakuten.com/dsd/geoserver/5g/mno_coverage_map/gwc/service/gmaps?LAYERS=mno_coverage_map:all_map&FORMAT=image/png&TRANSPARENT=TRUE&x={x}&y={y}&zoom={z}',
     fmt='image/png',
     attr="<a href='https://network.mobile.rakuten.co.jp/'>楽天モバイル</a>",
     tms=False,
