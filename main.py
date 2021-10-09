@@ -72,7 +72,7 @@ cell_group = folium.FeatureGroup(name="基地局").add_to(map)
 # アイコン( folium & simplekml共通 )
 icon_ok = "./icon/4G_OK.png"
 icon_ng = "./icon/4G_NG.png"
-icon_4G5G = "./icon/4G+5G_OK.png" # 5G Onlyと共通
+icon_4G5G = "./icon/4G+5G_OK.png" # 5G関連共通
 icon_ok_tentative = "./icon/4G_OK_tentative.png"
 icon_ng_tentative = "./icon/4G_NG_tentative.png"
 icon_indoor = "./icon/4G_indoor_OK.png"
@@ -118,17 +118,7 @@ for i, r in df.iterrows():
         )
         ).add_to(cell_group)
         
-    elif r["アイコン種別"] == "4G+5G_OK":
-        folium.Marker(
-        location = [ r["lat"], r["lng"] ],
-        popup=folium.Popup(html, max_width=300),
-        icon = folium.features.CustomIcon(
-            icon_4G5G,
-            icon_size = (30, 30)
-        )
-        ).add_to(cell_group)
-        
-    elif r["アイコン種別"] == "5G_OK" or "5G_NG":
+    elif r["アイコン種別"] == "4G+5G_OK" or r["アイコン種別"] == "4G+5G_NG" or r["アイコン種別"] == "5G_OK" or r["アイコン種別"] == "5G_NG":
         folium.Marker(
         location = [ r["lat"], r["lng"] ],
         popup=folium.Popup(html, max_width=300),
@@ -283,8 +273,7 @@ kml = simplekml.Kml(name="Nara")
 # アイコン設定
 ok_img = kml.addfile(icon_ok)
 ng_img = kml.addfile(icon_ng)
-ok_4G5G_img = kml.addfile(icon_4G5G)
-ok_5G_img = kml.addfile(icon_4G5G)
+ok_4G5G_img = kml.addfile(icon_4G5G) # 5G関連共通
 ok_tentative_img = kml.addfile(icon_ok_tentative)
 ng_tentative_img = kml.addfile(icon_ng_tentative)
 indoor_img = kml.addfile(icon_indoor)
@@ -321,35 +310,20 @@ ng_stylemap = simplekml.StyleMap()
 ng_stylemap.normalstyle = ng_normal
 ng_stylemap.highlightstyle = ng_highlight
 
-# 4G+5G_OKノーマルスタイル
+# 5G関連共通ノーマルスタイル
 ok_4G5G_normal = simplekml.Style()
 ok_4G5G_normal.iconstyle.scale = 1
 ok_4G5G_normal.iconstyle.icon.href = ok_4G5G_img
 
-# 4G+5G_OKハイライトスタイル
+# 5G関連共通ハイライトスタイル
 ok_4G5G_highlight = simplekml.Style()
 ok_4G5G_highlight.iconstyle.scale = 1
 ok_4G5G_highlight.iconstyle.icon.href = ok_4G5G_img
 
-# 4G+5G_OKスタイルマップ
+# 5G関連共通スタイルマップ()
 ok_4G5G_stylemap = simplekml.StyleMap()
 ok_4G5G_stylemap.normalstyle = ok_4G5G_normal
 ok_4G5G_stylemap.highlightstyle = ok_4G5G_highlight
-
-# 5G_OKノーマルスタイル
-ok_5G_normal = simplekml.Style()
-ok_5G_normal.iconstyle.scale = 1
-ok_5G_normal.iconstyle.icon.href = ok_5G_img
-
-# 5G_OKハイライトスタイル
-ok_5G_highlight = simplekml.Style()
-ok_5G_highlight.iconstyle.scale = 1
-ok_5G_highlight.iconstyle.icon.href = ok_5G_img
-
-# 5G_OKスタイルマップ
-ok_5G_stylemap = simplekml.StyleMap()
-ok_5G_stylemap.normalstyle = ok_5G_normal
-ok_5G_stylemap.highlightstyle = ok_5G_highlight
 
 # 4G_OK(仮)ノーマルスタイル
 ok_tentative_normal = simplekml.Style()
@@ -429,7 +403,6 @@ not_set_stylemap.highlightstyle = not_set_highlight
 kml.document.stylemaps.append(ok_stylemap)
 kml.document.stylemaps.append(ng_stylemap)
 kml.document.stylemaps.append(ok_4G5G_stylemap)
-kml.document.stylemaps.append(ok_5G_stylemap)
 kml.document.stylemaps.append(ok_tentative_stylemap)
 kml.document.stylemaps.append(ng_tentative_stylemap)
 kml.document.stylemaps.append(indoor_stylemap)
@@ -452,34 +425,30 @@ for i, r in df.iterrows():
         
         pnt.stylemap = kml.document.stylemaps[1]
     
-    elif r["アイコン種別"] == "4G+5G_OK":
+    elif r["アイコン種別"] == "4G+5G_OK" or r["アイコン種別"] == "4G+5G_NG" or r["アイコン種別"] == "5G_OK" or r["アイコン種別"] == "5G_NG":
         
         pnt.stylemap = kml.document.stylemaps[2]
         
-    elif r["アイコン種別"] == "5G_OK":
+    elif r["アイコン種別"] == "4G_OK(仮)":
         
         pnt.stylemap = kml.document.stylemaps[3]
         
-    elif r["アイコン種別"] == "4G_OK(仮)":
+    elif r["アイコン種別"] == "4G_NG(仮)":
         
         pnt.stylemap = kml.document.stylemaps[4]
         
-    elif r["アイコン種別"] == "4G_NG(仮)":
-        
-        pnt.stylemap = kml.document.stylemaps[5]
-        
     elif r["アイコン種別"] == "4G(屋内局)_OK":
         
-        pnt.stylemap = kml.document.stylemaps[6]
+        pnt.stylemap = kml.document.stylemaps[5]
 
     elif r["アイコン種別"] == "4G_OK(未知局)":
         
-        pnt.stylemap = kml.document.stylemaps[7]
+        pnt.stylemap = kml.document.stylemaps[6]
         
     # アイコン未設定時の設定    
     else:
         
-        pnt.stylemap = kml.document.stylemaps[8]
+        pnt.stylemap = kml.document.stylemaps[7]
     
     ex_data = simplekml.ExtendedData()
     
