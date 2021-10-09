@@ -128,7 +128,7 @@ for i, r in df.iterrows():
         )
         ).add_to(cell_group)
         
-    elif r["アイコン種別"] == "5G_OK":
+    elif r["アイコン種別"] == "5G_OK" or "5G_NG":
         folium.Marker(
         location = [ r["lat"], r["lng"] ],
         popup=folium.Popup(html, max_width=300),
