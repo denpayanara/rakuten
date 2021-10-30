@@ -68,6 +68,7 @@ folium.raster_layers.TileLayer(
 
 circle_group = folium.FeatureGroup(name="半径710m").add_to(map)
 cell_group = folium.FeatureGroup(name="基地局").add_to(map)
+antena_group = folium.FeatureGroup(name="(4G)アンテナ有無",show=False).add_to(map)
 
 # アイコン( folium & simplekml共通 )
 icon_ok = "./icon/4G_OK.png"
@@ -78,6 +79,8 @@ icon_ng_tentative = "./icon/4G_NG_tentative.png"
 icon_indoor = "./icon/4G_indoor_OK.png"
 icon_unknown = "./icon/unknown.png"
 icon_not_set = "./icon/not_set.png"
+antena_ok = "./icon/antena_ok.png"
+antena_ng = "./icon/antena_ng.png"
 
 for i, r in df.iterrows():
 
@@ -191,7 +194,29 @@ for _, r in df[ (df["設置形態"] != "屋内局") & (df["アイコン種別"] 
         weight = 0.7
         )
     ).add_to(map)
-    
+
+# 4Gアンテナ有無
+for _, r in df[ (df["開局状況"] == "NG" ) | (df["開局状況"] == "NG(仮)" )].iterrows():
+    if r["アンテナ有無"] == "OK":
+        folium.Marker(
+        location = [ r["lat"], r["lng"] ],
+        icon = folium.features.CustomIcon(
+            antena_ok,
+            icon_size = (30, 30)
+        )
+        ).add_to(antena_group)
+
+    else :
+        folium.Marker(
+        location = [ r["lat"], r["lng"] ],
+        icon = folium.features.CustomIcon(
+            antena_ng,
+            icon_size = (30, 30)
+        )
+        ).add_to(antena_group)
+
+antena_group.add_to(map)
+
 # 楽天モバイルエリア4Gマップレイヤー
 folium.raster_layers.TileLayer(
     name="(4G)楽天モバイルエリア",
