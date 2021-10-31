@@ -4,14 +4,21 @@ import pathlib
 import folium
 import pandas as pd
 import geopandas as gpd
+import datetime
 import shapefile
 import simplekml
 from folium import plugins
 
-#スプレッドシート読み込み
+# スプレッドシート読み込み
 url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5yTYaZX7YOA0bTx_DYShEVCBXqKntpOyHdBDJWVODzfcXAjpoBDScrMaVF1VSfYMcREZb3E30E0ha/pub?gid=630053475&single=true&output=csv"
 
 df = pd.read_csv(url).fillna("")
+
+# 今日の日付を取得
+DIFF_JST_FROM_UTC = 9
+now = datetime.datetime.utcnow() + datetime.timedelta(hours=DIFF_JST_FROM_UTC)
+today = now.date()
+str_today = today.strftime("%Y/%m/%d")
 
 # 行政区域_geojsonファイルの読み込み
 Area = "行政区域.geojson"
@@ -68,6 +75,7 @@ folium.raster_layers.TileLayer(
 
 circle_group = folium.FeatureGroup(name="半径710m").add_to(map)
 cell_group = folium.FeatureGroup(name="基地局").add_to(map)
+todayfind_group = folium.FeatureGroup(name="直近発見").add_to(map)
 antena_group = folium.FeatureGroup(name="(4G)アンテナ有無",show=False).add_to(map)
 
 # アイコン( folium & simplekml共通 )
@@ -79,6 +87,7 @@ icon_ng_tentative = "./icon/4G_NG_tentative.png"
 icon_indoor = "./icon/4G_indoor_OK.png"
 icon_unknown = "./icon/unknown.png"
 icon_not_set = "./icon/not_set.png"
+today_find = "./icon/today_find.png"
 antena_ok = "./icon/antena_ok.png"
 antena_ng = "./icon/antena_ng.png"
 
@@ -194,6 +203,17 @@ for _, r in df[ (df["設置形態"] != "屋内局") & (df["アイコン種別"] 
         weight = 0.7
         )
     ).add_to(map)
+
+# 直近発見
+for i, r in df.iterrows():
+    if r["確認日"] == str_today:
+        folium.Marker(
+        location = [ r["lat"], r["lng"] ],
+        icon = folium.features.CustomIcon(
+            today_find,
+            icon_size = (45, 45)
+        )
+        ).add_to(todayfind_group)
 
 # 4Gアンテナ有無
 for _, r in df[ (df["開局状況"] == "NG" ) | (df["開局状況"] == "NG(仮)" )].iterrows():
