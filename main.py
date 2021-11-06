@@ -237,10 +237,23 @@ for _, r in df[ (df["開局状況"] == "NG" ) | (df["開局状況"] == "NG(仮)"
 
 antena_group.add_to(map)
 
-# 楽天モバイルエリア4Gマップレイヤー
+# 楽天モバイルエリア4Gマップレイヤー(予定1)
 folium.raster_layers.TileLayer(
-    name="(4G)楽天モバイルエリア",
+    name="(4G)楽天モバイルエリア(予定1)",
     tiles='https://gateway-api.global.rakuten.com/dsd/geoserver/4g2m/mno_coverage_map/gwc/service/gmaps?LAYERS=mno_coverage_map:all_map&FORMAT=image/png&TRANSPARENT=TRUE&x={x}&y={y}&zoom={z}',
+    fmt='image/png',
+    attr="<a href='https://network.mobile.rakuten.co.jp/'>楽天モバイル</a>",
+    tms=False,
+    overlay=True,
+    control=True,
+    opacity=1.0,
+    show=False,
+).add_to(map)
+
+# 楽天モバイルエリア4Gマップレイヤー(予定2)
+folium.raster_layers.TileLayer(
+    name="(4G)楽天モバイルエリア(予定2)",
+    tiles='https://gateway-api.global.rakuten.com/dsd/geoserver/4g4m/mno_coverage_map/gwc/service/gmaps?LAYERS=mno_coverage_map:all_map&FORMAT=image/png&TRANSPARENT=TRUE&x={x}&y={y}&zoom={z}',
     fmt='image/png',
     attr="<a href='https://network.mobile.rakuten.co.jp/'>楽天モバイル</a>",
     tms=False,
