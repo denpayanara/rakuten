@@ -75,7 +75,7 @@ folium.raster_layers.TileLayer(
 
 circle_group = folium.FeatureGroup(name="半径710m").add_to(map)
 cell_group = folium.FeatureGroup(name="基地局").add_to(map)
-todayfind_group = folium.FeatureGroup(name="直近発見").add_to(map)
+todayfind_group = folium.FeatureGroup(name="直近確認").add_to(map)
 antena_group = folium.FeatureGroup(name="(4G)アンテナ有無",show=False).add_to(map)
 
 # アイコン( folium & simplekml共通 )
@@ -204,7 +204,7 @@ for _, r in df[ (df["設置形態"] != "屋内局") & (df["アイコン種別"] 
         )
     ).add_to(map)
 
-# 直近発見
+# 直近確認
 for i, r in df.iterrows():
     if r["確認日"] == str_today:
         folium.Marker(
@@ -292,7 +292,7 @@ folium.features.GeoJson(data=Area,
 def style(feature):
     return {
         "fillColor": feature["properties"]["カラー区分"],
-        'fillOpacity': 0.25,
+        'fillOpacity': 0.65,
         "stroke": False,
     }
 
