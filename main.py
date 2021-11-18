@@ -77,6 +77,7 @@ circle_group = folium.FeatureGroup(name="半径710m").add_to(map)
 cell_group = folium.FeatureGroup(name="基地局").add_to(map)
 todayfind_group = folium.FeatureGroup(name="直近確認").add_to(map)
 antena_group = folium.FeatureGroup(name="(4G)アンテナ有無",show=False).add_to(map)
+mail_group =folium.FeatureGroup(name="情報提供",show=True).add_to(map)
 
 # アイコン( folium & simplekml共通 )
 icon_ok = "./icon/4G_OK.png"
@@ -90,6 +91,7 @@ icon_not_set = "./icon/not_set.png"
 today_find = "./icon/today_find.png"
 antena_ok = "./icon/antena_ok.png"
 antena_ng = "./icon/antena_ng.png"
+icon_mail = "./icon/mail.png"
 
 for i, r in df.iterrows():
 
@@ -303,6 +305,13 @@ folium.features.GeoJson(data=TAC,
                         show=False,
                         popup = folium.features.GeoJsonPopup(["TAC"])
                        ).add_to(map)
+
+# 情報提供フォーム
+folium.Marker(location = [ 34.6304528, 135.6563892 ],
+    popup=folium.Popup('<a href="https://twitter.com/ZSCCli0y6RMxYmU">管理者Twitterアカウントへ</a><br><a href="https://forms.gle/nDr8S5RiFFWGuoJu8">情報提供フォームへ</a><br>', 
+    max_width=300),
+    icon = folium.features.CustomIcon(icon_mail,icon_size = (45, 45)
+    )).add_to(mail_group)
 
 # フルスクリーン
 folium.plugins.Fullscreen(position = 'bottomright').add_to(map)
