@@ -307,9 +307,14 @@ folium.features.GeoJson(data=TAC,
                        ).add_to(map)
 
 # 情報提供フォーム
+html_description = ('<p>このマップは皆さまからの情報により成り立っております。<br>お手数ですが情報をお寄せ下さいませ(匿名厳守)</p>'
+'<p style="text-align:center"><a href="https://twitter.com/ZSCCli0y6RMxYmU" target="_blank">管理者Twitterアカウントへ</a></p>'
+'<p style="text-align:center"><a href="https://form.run/@rakuten-mobile-map-nara" target="_blank">情報提供フォームへ(匿名)</a></p>'
+'<p style="text-align:center"><a href="https://sites.google.com/view/rakuten-map-nara" target="_blank">基地局探しまとめサイト</a></p>')
+
 folium.Marker(location = [ 34.6304528, 135.6563892 ],
-    popup=folium.Popup('<a href="https://twitter.com/ZSCCli0y6RMxYmU">管理者Twitterアカウントへ</a><br><a href="https://forms.gle/nDr8S5RiFFWGuoJu8">情報提供フォームへ</a><br>', 
-    max_width=300),
+    popup=folium.Popup(html_description, 
+    max_width=350),
     icon = folium.features.CustomIcon(icon_mail,icon_size = (45, 45)
     )).add_to(mail_group)
 
