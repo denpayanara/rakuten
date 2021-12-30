@@ -12,7 +12,7 @@ from folium import plugins
 # スプレッドシート読み込み
 url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5yTYaZX7YOA0bTx_DYShEVCBXqKntpOyHdBDJWVODzfcXAjpoBDScrMaVF1VSfYMcREZb3E30E0ha/pub?gid=630053475&single=true&output=csv"
 
-df = pd.read_csv(url).fillna("")
+df = pd.read_csv(url, parse_dates = ['確認日'] ).fillna("")
 
 # 今日の日付を取得
 DIFF_JST_FROM_UTC = 9
@@ -78,6 +78,8 @@ cell_group = folium.FeatureGroup(name="基地局").add_to(map)
 todayfind_group = folium.FeatureGroup(name="直近確認").add_to(map)
 antena_group = folium.FeatureGroup(name="(4G)アンテナ有無",show=False).add_to(map)
 mail_group =folium.FeatureGroup(name="情報提供",show=True).add_to(map)
+# 2021年開局
+year2021_group = folium.FeatureGroup(name="2021年開局",show=False).add_to(map)
 
 # アイコン( folium & simplekml共通 )
 icon_ok = "./icon/4G_OK.png"
@@ -238,6 +240,17 @@ for _, r in df[ (df["開局状況"] == "NG" ) | (df["開局状況"] == "NG(仮)"
         ).add_to(antena_group)
 
 antena_group.add_to(map)
+
+# 2021年開局
+for _, r in df[(df['確認日'] >= datetime.datetime(2021,1,1)) & (df['確認日'] < datetime.datetime(2021,12,31))].iterrows():
+    if r['開局状況'] == 'OK' or r['開局状況'] == 'OK(仮)' or r['開局状況'] == 'OK(未知局)':
+        folium.Marker(
+        location = [ r["lat"], r["lng"] ],
+        icon = folium.features.CustomIcon(
+            antena_ok,
+            icon_size = (30, 30)
+        )
+        ).add_to(year2021_group)
 
 # 楽天モバイルエリア4Gマップレイヤー(予定1)
 folium.raster_layers.TileLayer(
