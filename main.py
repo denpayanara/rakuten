@@ -12,7 +12,13 @@ from folium import plugins
 # スプレッドシート読み込み
 url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5yTYaZX7YOA0bTx_DYShEVCBXqKntpOyHdBDJWVODzfcXAjpoBDScrMaVF1VSfYMcREZb3E30E0ha/pub?gid=630053475&single=true&output=csv"
 
-df = pd.read_csv(url, parse_dates = ['確認日'] ).fillna("")
+df = pd.read_csv(url).fillna("")
+
+# 「確認日」の列をdatetime型に変換
+df['確認日'] = pd.to_datetime( df['確認日'], format = '%Y/%m/%d', errors='coerce')
+
+# 文字列型の列を作成(欠損値は空にする)
+df['確認日_str'] = [d.strftime('%Y年%m月%d日') if not pd.isnull(d) else '' for d in df['確認日']]
 
 # 今日の日付を取得
 DIFF_JST_FROM_UTC = 9
@@ -111,7 +117,7 @@ for i, r in df.iterrows():
     'アンテナ有無: ' f'{r["アンテナ有無"]}<br>'
     '電力線: ' f'{r["電力線"]}<br>'
     '光回線: ' f'{r["光回線"]}<br>'
-    '確認日: ' f'{r["確認日"]}<br>'
+    '確認日: ' f'{r["確認日_str"]}<br>'
     + tweet_link +
     f' <a href="{r["URL"]}">Googleマップへ</a><br>')
     
