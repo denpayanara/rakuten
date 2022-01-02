@@ -24,7 +24,7 @@ df['確認日_str'] = [d.strftime('%Y年%m月%d日') if not pd.isnull(d) else ''
 DIFF_JST_FROM_UTC = 9
 now = datetime.datetime.utcnow() + datetime.timedelta(hours=DIFF_JST_FROM_UTC)
 today = now.date()
-str_today = today.strftime("%Y/%m/%d")
+# str_today = today.strftime("%Y/%m/%d")
 
 # 行政区域_geojsonファイルの読み込み
 Area = "行政区域.geojson"
@@ -216,7 +216,7 @@ for _, r in df[ (df["設置形態"] != "屋内局") & (df["アイコン種別"] 
 
 # 直近確認
 for i, r in df.iterrows():
-    if r["確認日"] == str_today:
+    if r["確認日"] == pd.Timestamp(today):
         folium.Marker(
         location = [ r["lat"], r["lng"] ],
         icon = folium.features.CustomIcon(
