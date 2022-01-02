@@ -5,6 +5,7 @@ import folium
 import pandas as pd
 import geopandas as gpd
 import datetime
+from dateutil.relativedelta import relativedelta
 import shapefile
 import simplekml
 from folium import plugins
@@ -86,6 +87,7 @@ antena_group = folium.FeatureGroup(name="(4G)アンテナ有無",show=False).add
 mail_group =folium.FeatureGroup(name="情報提供",show=True).add_to(map)
 # 2021年開局
 year2021_group = folium.FeatureGroup(name="2021年開局",show=False).add_to(map)
+this_month_group = folium.FeatureGroup(name="今月開局",show=False).add_to(map)
 
 # アイコン( folium & simplekml共通 )
 icon_ok = "./icon/4G_OK.png"
@@ -257,6 +259,17 @@ for _, r in df[(df['確認日'] >= datetime.datetime(2021,1,1)) & (df['確認日
             icon_size = (30, 30)
         )
         ).add_to(year2021_group)
+        
+ # 今月開局
+for _, r in df[( df['確認日'] >= now.replace(day=1) ) & (df['確認日'] <= now + relativedelta(day=1, months=1, days=-1)) ].iterrows():
+    if r['開局状況'] == 'OK' or r['開局状況'] == 'OK(仮)' or r['開局状況'] == 'OK(未知局)':
+        folium.Marker(
+        location = [ r["lat"], r["lng"] ],
+        icon = folium.features.CustomIcon(
+            antena_ok,
+            icon_size = (30, 30)
+        )
+        ).add_to(this_month_group)
 
 # 楽天モバイルエリア4Gマップレイヤー(予定1)
 folium.raster_layers.TileLayer(
