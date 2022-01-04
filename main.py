@@ -346,7 +346,9 @@ html_description = ('<p>このマップは皆さまからの情報により成�
 
 folium.Marker(location = [ 34.6304528, 135.6563892 ],
     popup=folium.Popup(html_description, 
-    max_width=350),
+    max_width=350,
+    show=True,
+    sticky=True),
     icon = folium.features.CustomIcon(icon_mail,icon_size = (45, 45)
     )).add_to(mail_group)
 
