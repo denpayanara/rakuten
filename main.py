@@ -9,6 +9,7 @@ from dateutil.relativedelta import relativedelta
 import shapefile
 import simplekml
 from folium import plugins
+import urllib.parse
 
 # スプレッドシート読み込み
 url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5yTYaZX7YOA0bTx_DYShEVCBXqKntpOyHdBDJWVODzfcXAjpoBDScrMaVF1VSfYMcREZb3E30E0ha/pub?gid=630053475&single=true&output=csv"
@@ -110,6 +111,33 @@ for i, r in df.iterrows():
         tweet_link = f' <a href="{r["tweet"]}">ツイートへ</a><br>'
     else:
         tweet_link = ""
+
+    #　開局報告
+
+    text = '\r\n\r\n'.join(
+        [
+            f'奈良県の {r["名称"]} が開局しました。',
+            'eNB-LCID:',
+            f'【ツイート】\r\n{r["tweet"]}',
+            f'【置局場所】\r\n{r["URL"]}',
+            '@ZSCCli0y6RMxYmU\n',
+            ]
+    )
+
+    d = {
+        "text": text,
+        "hashtags": '楽天モバイル,奈良'
+    }
+
+    url_twit = urllib.parse.urlunparse(
+        ("https", "twitter.com", "/intent/tweet", None, urllib.parse.urlencode(d), None)
+    )
+
+    tag_twit = (
+        f'<a href="{url_twit}" target="_blank">開局報告をする</a><br>'
+        if r["開局状況"] != 'OK'
+        else ""
+    )
     
     # popupの説明内容
     html = ('名称: ' f'{r["名称"]}<br>'
@@ -121,6 +149,7 @@ for i, r in df.iterrows():
     '光回線: ' f'{r["光回線"]}<br>'
     '確認日: ' f'{r["確認日_str"]}<br>'
     + tweet_link +
+    tag_twit +
     f' <a href="{r["URL"]}">Googleマップへ</a><br>')
     
     if r["アイコン種別"] == "4G_OK":
