@@ -1,15 +1,17 @@
 # coding: utf-8
 
-import pathlib
-import folium
-import pandas as pd
-import geopandas as gpd
+import calendar
 import datetime
+import pathlib
+import urllib.parse
+
 from dateutil.relativedelta import relativedelta
+import folium
+from folium import plugins
+import geopandas as gpd
+import pandas as pd
 import shapefile
 import simplekml
-from folium import plugins
-import urllib.parse
 
 # スプレッドシート読み込み
 url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5yTYaZX7YOA0bTx_DYShEVCBXqKntpOyHdBDJWVODzfcXAjpoBDScrMaVF1VSfYMcREZb3E30E0ha/pub?gid=630053475&single=true&output=csv"
@@ -22,11 +24,25 @@ df['確認日'] = pd.to_datetime( df['確認日'], format = '%Y/%m/%d', errors='
 # 文字列型の列を作成(欠損値は空にする)
 df['確認日_str'] = [d.strftime('%Y年%m月%d日') if not pd.isnull(d) else '' for d in df['確認日']]
 
+
+# df['名称']を '未開局番号' と '名称_3' にスプリット
+
+# df['開局状況']が'OK'でないdf['名称']を抽出し新しい列を作る
+df['名称_2'] = df['名称'].mask(df['開局状況'] == 'OK', '')
+
+# df['名称_2']をスプリット
+df[['未開局番号', '名称_3']] = df['名称_2'].str.split(')', expand=True)
+
+df['未開局番号'] = df['未開局番号'].str.replace('(', '', regex=False)
+
+df['名称_3'] = df['名称_3'].mask(df['開局状況'] == 'OK', df['名称'])
+
+# df['名称_2']は不要なので削除
+df.drop(columns = '名称_2', inplace=True)
+
 # 今日の日付を取得
-DIFF_JST_FROM_UTC = 9
-now = datetime.datetime.utcnow() + datetime.timedelta(hours=DIFF_JST_FROM_UTC)
+now = datetime.datetime.utcnow() + datetime.timedelta(hours=9)
 today = now.date()
-# str_today = today.strftime("%Y/%m/%d")
 
 # 行政区域_geojsonファイルの読み込み
 Area = "行政区域.geojson"
@@ -86,8 +102,7 @@ cell_group = folium.FeatureGroup(name="基地局").add_to(map)
 todayfind_group = folium.FeatureGroup(name="直近確認").add_to(map)
 antena_group = folium.FeatureGroup(name="(4G)アンテナ有無",show=False).add_to(map)
 mail_group =folium.FeatureGroup(name="情報提供",show=True).add_to(map)
-# 2021年開局
-year2021_group = folium.FeatureGroup(name="2021年開局",show=False).add_to(map)
+this_year_group = folium.FeatureGroup(name="今年開局",show=False).add_to(map)
 this_month_group = folium.FeatureGroup(name="今月開局",show=False).add_to(map)
 
 # アイコン( folium & simplekml共通 )
@@ -116,17 +131,17 @@ for i, r in df.iterrows():
 
     text = '\r\n\r\n'.join(
         [
-            f'奈良県の {r["名称"]} が開局しました。',
+            f'#奈良県 {r["名称_3"]}にて #楽天モバイル 基地局が開局しました。',
             'eNB-LCID:',
             f'【ツイート】\r\n{r["tweet"]}',
             f'【置局場所】\r\n{r["URL"]}',
-            '@ZSCCli0y6RMxYmU\n',
+            f'管理用:{r["未開局番号"]}\r\n@ZSCCli0y6RMxYmU',
+
             ]
     )
 
     d = {
         "text": text,
-        "hashtags": '楽天モバイル,奈良'
     }
 
     url_twit = urllib.parse.urlunparse(
@@ -278,8 +293,8 @@ for _, r in df[ (df["開局状況"] == "NG" ) | (df["開局状況"] == "NG(仮)"
 
 antena_group.add_to(map)
 
-# 2021年開局
-for _, r in df[(df['確認日'] >= datetime.datetime(2021,1,1)) & (df['確認日'] < datetime.datetime(2021,12,31))].iterrows():
+# 今年開局
+for _, r in df[(df['確認日'] >= datetime.date(now.year, 1, 1).strftime('%Y/%m/%d')) & (df['確認日'] < datetime.date(now.year, 12, calendar.monthrange(now.year, 12)[1]).strftime('%Y/%m/%d'))].iterrows():
     if r['開局状況'] == 'OK' or r['開局状況'] == 'OK(仮)' or r['開局状況'] == 'OK(未知局)':
         folium.Marker(
         location = [ r["lat"], r["lng"] ],
@@ -287,7 +302,7 @@ for _, r in df[(df['確認日'] >= datetime.datetime(2021,1,1)) & (df['確認日
             antena_ok,
             icon_size = (30, 30)
         )
-        ).add_to(year2021_group)
+        ).add_to(this_year_group)
         
  # 今月開局
 for _, r in df[( df['確認日'] >= now.replace(day=1) ) & (df['確認日'] <= now + relativedelta(day=1, months=1, days=-1)) ].iterrows():
@@ -377,7 +392,7 @@ folium.Marker(location = [ 34.6304528, 135.6563892 ],
     popup=folium.Popup(html_description, 
     max_width=350,
     show=True,
-    sticky=True),
+    sticky=False),
     icon = folium.features.CustomIcon(icon_mail,icon_size = (45, 45)
     )).add_to(mail_group)
 
