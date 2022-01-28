@@ -24,7 +24,6 @@ df['確認日'] = pd.to_datetime( df['確認日'], format = '%Y/%m/%d', errors='
 # 文字列型の列を作成(欠損値は空にする)
 df['確認日_str'] = [d.strftime('%Y年%m月%d日') if not pd.isnull(d) else '' for d in df['確認日']]
 
-
 # df['名称']を '未開局番号' と '名称_3' にスプリット
 
 # df['開局状況']が'OK'でないdf['名称']を抽出し新しい列を作る
@@ -43,6 +42,18 @@ df.drop(columns = '名称_2', inplace=True)
 # 今日の日付を取得
 now = datetime.datetime.utcnow() + datetime.timedelta(hours=9)
 today = now.date()
+
+# df['確認日']から「今月」を抽出したDataFrame
+this_month_df =  df[( df['確認日'] >= now.replace(day=1) ) & (df['確認日'] <= now + relativedelta(day=1, months=1, days=-1)) ]
+
+# 今月開局数
+this_month_ready_ok_count = (this_month_df.query("開局状況 == ['OK', 'OK(仮)', 'OK(未知局)']").count())['確認日']
+
+# df['確認日']から「今年」を抽出したDataFrame
+this_year_df = df[(df['確認日'] >= datetime.date(now.year, 1, 1).strftime('%Y/%m/%d')) & (df['確認日'] < datetime.date(now.year, 12, calendar.monthrange(now.year, 12)[1]).strftime('%Y/%m/%d'))]
+
+# 今年開局数
+this_year_ready_ok_count = (this_month_df.query("開局状況 == ['OK', 'OK(仮)', 'OK(未知局)']").count())['確認日']
 
 # 行政区域_geojsonファイルの読み込み
 Area = "行政区域.geojson"
@@ -102,8 +113,8 @@ cell_group = folium.FeatureGroup(name="基地局").add_to(map)
 todayfind_group = folium.FeatureGroup(name="直近確認").add_to(map)
 antena_group = folium.FeatureGroup(name="(4G)アンテナ有無",show=False).add_to(map)
 mail_group =folium.FeatureGroup(name="情報提供",show=True).add_to(map)
-this_year_group = folium.FeatureGroup(name="今年開局",show=False).add_to(map)
-this_month_group = folium.FeatureGroup(name="今月開局",show=False).add_to(map)
+this_year_group = folium.FeatureGroup(name=f'今年開局({this_year_ready_ok_count})',show=False).add_to(map)
+this_month_group = folium.FeatureGroup(name=f'今月開局({this_month_ready_ok_count}件)',show=False).add_to(map)
 
 # アイコン( folium & simplekml共通 )
 icon_ok = "./icon/4G_OK.png"
@@ -294,7 +305,7 @@ for _, r in df[ (df["開局状況"] == "NG" ) | (df["開局状況"] == "NG(仮)"
 antena_group.add_to(map)
 
 # 今年開局
-for _, r in df[(df['確認日'] >= datetime.date(now.year, 1, 1).strftime('%Y/%m/%d')) & (df['確認日'] < datetime.date(now.year, 12, calendar.monthrange(now.year, 12)[1]).strftime('%Y/%m/%d'))].iterrows():
+for _, r in this_year_df.iterrows():
     if r['開局状況'] == 'OK' or r['開局状況'] == 'OK(仮)' or r['開局状況'] == 'OK(未知局)':
         folium.Marker(
         location = [ r["lat"], r["lng"] ],
@@ -305,7 +316,7 @@ for _, r in df[(df['確認日'] >= datetime.date(now.year, 1, 1).strftime('%Y/%m
         ).add_to(this_year_group)
         
  # 今月開局
-for _, r in df[( df['確認日'] >= now.replace(day=1) ) & (df['確認日'] <= now + relativedelta(day=1, months=1, days=-1)) ].iterrows():
+for _, r in this_month_df.iterrows():
     if r['開局状況'] == 'OK' or r['開局状況'] == 'OK(仮)' or r['開局状況'] == 'OK(未知局)':
         folium.Marker(
         location = [ r["lat"], r["lng"] ],
