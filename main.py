@@ -113,7 +113,7 @@ cell_group = folium.FeatureGroup(name="基地局").add_to(map)
 todayfind_group = folium.FeatureGroup(name="直近確認").add_to(map)
 antena_group = folium.FeatureGroup(name="(4G)アンテナ有無",show=False).add_to(map)
 mail_group =folium.FeatureGroup(name="情報提供",show=True).add_to(map)
-this_year_group = folium.FeatureGroup(name=f'今年開局({this_year_ready_ok_count})',show=False).add_to(map)
+this_year_group = folium.FeatureGroup(name=f'今年開局({this_year_ready_ok_count}件)',show=False).add_to(map)
 this_month_group = folium.FeatureGroup(name=f'今月開局({this_month_ready_ok_count}件)',show=False).add_to(map)
 
 # アイコン( folium & simplekml共通 )
