@@ -53,7 +53,7 @@ this_month_ready_ok_count = (this_month_df.query("開局状況 == ['OK', 'OK(仮
 this_year_df = df[(df['確認日'] >= datetime.date(now.year, 1, 1).strftime('%Y/%m/%d')) & (df['確認日'] < datetime.date(now.year, 12, calendar.monthrange(now.year, 12)[1]).strftime('%Y/%m/%d'))]
 
 # 今年開局数
-this_year_ready_ok_count = (this_month_df.query("開局状況 == ['OK', 'OK(仮)', 'OK(未知局)']").count())['確認日']
+this_year_ready_ok_count = (this_year_df.query("開局状況 == ['OK', 'OK(仮)', 'OK(未知局)']").count())['確認日']
 
 # 行政区域_geojsonファイルの読み込み
 Area = "行政区域.geojson"
