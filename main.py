@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import calendar
+from cmath import nan
 import datetime
 import pathlib
 import urllib.parse
@@ -109,6 +110,7 @@ folium.raster_layers.TileLayer(
 ).add_to(map)
 
 circle_group = folium.FeatureGroup(name="半径710m").add_to(map)
+unknown_circle_group = folium.FeatureGroup(name="未知局circle(TA値×151)").add_to(map)
 cell_group = folium.FeatureGroup(name="基地局").add_to(map)
 todayfind_group = folium.FeatureGroup(name="直近確認").add_to(map)
 antena_group = folium.FeatureGroup(name="(4G)アンテナ有無",show=False).add_to(map)
@@ -247,6 +249,18 @@ for i, r in df.iterrows():
             icon_size = (30, 30)
         )
         ).add_to(cell_group)
+
+        # TA値からサークルを描く
+        if r["TA値"] != '':
+            unknown_circle_group.add_child(
+                folium.vector_layers.Circle(
+                    location = [ r["lat"], r["lng"] ],
+                    radius = int(r["TA値"]) * 151,
+                    color = "#FF0000",
+                    weight = 0.7
+                )
+            ).add_to(map)
+
         
     # アイコン区分未設定時の設定
     else:
