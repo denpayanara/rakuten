@@ -136,7 +136,7 @@ for i, r in df.iterrows():
 
     # tweetリンク有無の処理
     if r["tweet"] != "":
-        tweet_link = f' <a href="{r["tweet"]}">ツイートへ</a><br>'
+        tweet_link = f' <a href="{r["tweet"]}">ツイートへ</a>'
     else:
         tweet_link = ""
 
@@ -162,23 +162,23 @@ for i, r in df.iterrows():
     )
 
     tag_twit = (
-        f'<a href="{url_twit}" target="_blank">開局報告をする</a><br>'
+        f'<a href="{url_twit}" target="_blank">開局報告をする</a>'
         if r["開局状況"] != 'OK'
         else ""
     )
     
     # popupの説明内容
-    html = ('名称: ' f'{r["名称"]}<br>'
-    'eNB-LCID: ' f'{r["eNB-LCID"]}<br>'
-    '備考: ' f'{r["備考"]}<br>'
-    '設置形態: ' f'{r["設置形態"]}<br>'
-    'アンテナ有無: ' f'{r["アンテナ有無"]}<br>'
-    '電力線: ' f'{r["電力線"]}<br>'
-    '光回線: ' f'{r["光回線"]}<br>'
-    '確認日: ' f'{r["確認日_str"]}<br>'
-    + tweet_link +
-    tag_twit +
-    f' <a href="{r["URL"]}">Googleマップへ</a><br>')
+    html = f'名称: {r["名称"]}<br>\
+            eNB-LCID: {r["eNB-LCID"]}<br>\
+            備考: {r["備考"]}<br>\
+            設置形態: {r["設置形態"]}<br>\
+            アンテナ有無: {r["アンテナ有無"]}<br>\
+            電力線: {r["電力線"]}<br>\
+            光回線: {r["光回線"]}<br>\
+            確認日: {r["確認日_str"]}<br>\
+            {tweet_link}<br>\
+            {tag_twit}<br>\
+            <a href="{r["URL"]}">Googleマップへ</a><br>'
     
     if r["アイコン種別"] == "4G_OK":
         folium.Marker(
