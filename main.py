@@ -1,7 +1,6 @@
 # coding: utf-8
 
 import calendar
-from cmath import nan
 import datetime
 import pathlib
 import urllib.parse
@@ -11,7 +10,6 @@ import folium
 from folium import plugins
 import geopandas as gpd
 import pandas as pd
-import shapefile
 import simplekml
 
 # スプレッドシート読み込み
@@ -162,7 +160,7 @@ for i, r in df.iterrows():
     )
 
     tag_twit = (
-        f'<a href="{url_twit}" target="_blank">開局報告をする</a>'
+        f'<a href="{url_twit}" target="_blank">開局報告をする</a><br>'
         if r["開局状況"] != 'OK'
         else ""
     )
@@ -177,78 +175,29 @@ for i, r in df.iterrows():
             光回線: {r["光回線"]}<br>\
             確認日: {r["確認日_str"]}<br>\
             {tweet_link}<br>\
-            {tag_twit}<br>\
+            {tag_twit}\
             <a href="{r["URL"]}">Googleマップへ</a><br>'
     
     if r["アイコン種別"] == "4G_OK":
-        folium.Marker(
-        location = [ r["lat"], r["lng"] ],
-        popup = folium.Popup(html, max_width=300),
-        icon = folium.features.CustomIcon(
-            icon_ok,
-            icon_size = (30, 30)
-        )
-        ).add_to(cell_group)
-        
+        icon_image = icon_ok
+     
     elif r["アイコン種別"] == "4G_NG":
-        folium.Marker(
-        location = [ r["lat"], r["lng"] ],
-        popup=folium.Popup(html, max_width=300),
-        icon = folium.features.CustomIcon(
-            icon_ng,
-            icon_size = (30, 30)
-        )
-        ).add_to(cell_group)
-        
+        icon_image = icon_ng
+
     elif r["アイコン種別"] == "4G+5G_OK" or r["アイコン種別"] == "4G+5G_NG" or r["アイコン種別"] == "5G_OK" or r["アイコン種別"] == "5G_NG":
-        folium.Marker(
-        location = [ r["lat"], r["lng"] ],
-        popup=folium.Popup(html, max_width=300),
-        icon = folium.features.CustomIcon(
-            icon_4G5G,
-            icon_size = (30, 30)
-        )
-        ).add_to(cell_group)
+        icon_image = icon_4G5G
 
     elif r["アイコン種別"] == "4G_OK(仮)":
-        folium.Marker(
-        location = [ r["lat"], r["lng"] ],
-        popup=folium.Popup(html, max_width=300),
-        icon = folium.features.CustomIcon(
-        icon_ok_tentative,
-        icon_size = (30, 30)
-        )
-        ).add_to(cell_group)
-    
+        icon_image = icon_ok_tentative
+
     elif r["アイコン種別"] == "4G_NG(仮)":
-        folium.Marker(
-        location = [ r["lat"], r["lng"] ],
-        popup=folium.Popup(html, max_width=300),
-        icon = folium.features.CustomIcon(
-            icon_ng_tentative,
-            icon_size = (30, 30)
-        )
-        ).add_to(cell_group)
+        icon_image = icon_ng_tentative
 
     elif r["アイコン種別"] == "4G(屋内局)_OK":
-        folium.Marker(
-        location = [ r["lat"], r["lng"] ],
-        popup=folium.Popup(html, max_width=300),
-        icon = folium.features.CustomIcon(
-            icon_indoor,
-            icon_size = (30, 30)
-        )
-        ).add_to(cell_group)
+        icon_image = icon_indoor
 
     elif r["アイコン種別"] == "4G_OK(未知局)":
-        folium.Marker(
-        location = [ r["lat"], r["lng"] ],
-        popup=folium.Popup(html, max_width=300),
-        icon = folium.features.CustomIcon(
-            icon_unknown,
-            icon_size = (30, 30)
-        )
-        ).add_to(cell_group)
+        icon_image = icon_unknown
 
         # TA値からサークルを描く
         if r["TA値"] != '':
@@ -261,17 +210,19 @@ for i, r in df.iterrows():
                 )
             ).add_to(map)
 
-        
     # アイコン区分未設定時の設定
     else:
-        folium.Marker(location = [ r["lat"], r["lng"] ],
-        popup=folium.Popup('【未設定アイコン】<br> '+html, max_width=300),
+        icon_image = icon_not_set
+
+    folium.Marker(
+        location = [ r["lat"], r["lng"] ],
+        popup = folium.Popup(html, max_width=300),
         icon = folium.features.CustomIcon(
-            icon_not_set,
-            icon_size = (30, 30)
+        icon_image,
+        icon_size = (30, 30)
         )
-        ).add_to(cell_group)
-        
+    ).add_to(cell_group)
+
 cell_group.add_to(map)
 
 # 半径710mサークル
@@ -391,27 +342,25 @@ folium.features.GeoJson(data=Area,
                         popup = folium.features.GeoJsonPopup(["市区町村名"])
                        ).add_to(map)
 
-# TACポリゴンのスタイル指定
-def style(feature):
-    return {
-        "fillColor": feature["properties"]["カラー区分"],
-        'fillOpacity': 0.65,
-        "stroke": False,
-    }
-
 # TACポリゴン
 folium.features.GeoJson(data=TAC,
-                        style_function=style,
+                        style_function = lambda feature:{
+                            "fillColor": feature["properties"]["カラー区分"],
+                            'fillOpacity': 0.65,
+                            "stroke": False,
+                        },
                         name="TAC(行政区域データ(国土交通省)を加工)",
                         show=False,
                         popup = folium.features.GeoJsonPopup(["TAC"])
                        ).add_to(map)
 
 # 情報提供フォーム
-html_description = ('<p>このマップは皆さまからの情報により成り立っております。<br>お手数ですが情報をお寄せ下さいませ(匿名厳守)</p>'
-'<p style="text-align:center"><a href="https://twitter.com/ZSCCli0y6RMxYmU" target="_blank">管理者Twitterアカウントへ</a></p>'
-'<p style="text-align:center"><a href="https://form.run/@rakuten-mobile-map-nara" target="_blank">情報提供フォームへ(匿名)</a></p>'
-'<p style="text-align:center"><a href="https://sites.google.com/view/rakuten-map-nara" target="_blank">基地局探しまとめサイト</a></p>')
+html_description = f'<p>このマップは皆さまからの情報により成り立っております。<br>お手数ですが情報をお寄せ下さいませ(匿名厳守)</p>\
+                    <p style="text-align:center"><a href="https://twitter.com/ZSCCli0y6RMxYmU" target="_blank">管理者Twitterアカウントへ</a></p>\
+                    <p style="text-align:center"><a href="https://form.run/@rakuten-mobile-map-nara" target="_blank">情報提供フォームへ(匿名)</a></p>\
+                    <p style="text-align:center"><a href="https://sites.google.com/view/rakuten-map-nara" target="_blank">基地局探しまとめサイト</a></p>\
+                    <p style="text-align:center">最終更新日時：{now.strftime("%Y/%m/%d %H:%M")}</p>'
+
 
 folium.Marker(location = [ 34.6304528, 135.6563892 ],
     popup=folium.Popup(html_description, 
