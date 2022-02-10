@@ -8,7 +8,6 @@ import urllib.parse
 from dateutil.relativedelta import relativedelta
 import folium
 from folium import plugins
-import geopandas as gpd
 import pandas as pd
 import simplekml
 
@@ -107,14 +106,14 @@ folium.raster_layers.TileLayer(
     attr = "<a href='https://maps.gsi.go.jp/development/ichiran.html'>国土地理院</a>"
 ).add_to(map)
 
-circle_group = folium.FeatureGroup(name="半径710m").add_to(map)
-unknown_circle_group = folium.FeatureGroup(name="未知局circle(TA値×151)").add_to(map)
+circle_group = folium.FeatureGroup(name="半径710m", show=False).add_to(map)
+unknown_circle_group = folium.FeatureGroup(name="未知局サークル(TA値×151)").add_to(map)
 cell_group = folium.FeatureGroup(name="基地局").add_to(map)
 todayfind_group = folium.FeatureGroup(name="直近確認").add_to(map)
-antena_group = folium.FeatureGroup(name="(4G)アンテナ有無",show=False).add_to(map)
-mail_group =folium.FeatureGroup(name="情報提供",show=True).add_to(map)
-this_year_group = folium.FeatureGroup(name=f'今年開局({this_year_ready_ok_count}件)',show=False).add_to(map)
-this_month_group = folium.FeatureGroup(name=f'今月開局({this_month_ready_ok_count}件)',show=False).add_to(map)
+antena_group = folium.FeatureGroup(name="(4G)アンテナ有無", show=False).add_to(map)
+mail_group =folium.FeatureGroup(name="情報提供", show=True).add_to(map)
+this_year_group = folium.FeatureGroup(name=f'今年開局({this_year_ready_ok_count}件)', show=False).add_to(map)
+this_month_group = folium.FeatureGroup(name=f'今月開局({this_month_ready_ok_count}件)', show=False).add_to(map)
 
 # アイコン( folium & simplekml共通 )
 icon_ok = "./icon/4G_OK.png"
@@ -134,7 +133,7 @@ for i, r in df.iterrows():
 
     # tweetリンク有無の処理
     if r["tweet"] != "":
-        tweet_link = f' <a href="{r["tweet"]}">ツイートへ</a>'
+        tweet_link = f' <a href="{r["tweet"]}">ツイートへ</a><br>'
     else:
         tweet_link = ""
 
@@ -174,7 +173,7 @@ for i, r in df.iterrows():
             電力線: {r["電力線"]}<br>\
             光回線: {r["光回線"]}<br>\
             確認日: {r["確認日_str"]}<br>\
-            {tweet_link}<br>\
+            {tweet_link}\
             {tag_twit}\
             <a href="{r["URL"]}">Googleマップへ</a><br>'
     
@@ -206,7 +205,7 @@ for i, r in df.iterrows():
                     location = [ r["lat"], r["lng"] ],
                     radius = int(r["TA値"]) * 151,
                     color = "#FF0000",
-                    weight = 0.7
+                    weight = 1.5
                 )
             ).add_to(map)
 
@@ -232,6 +231,9 @@ for _, r in df[ (df["設置形態"] != "屋内局") & (df["アイコン種別"] 
         location = [ r["lat"], r["lng"] ],
         radius = 710,
         color = "#000000",
+        fill = True,
+        fill_color = "#000000",
+        fill_opacity = 0.4,
         weight = 0.7
         )
     ).add_to(map)
@@ -335,11 +337,11 @@ folium.features.GeoJson(data=Area,
                         style_function = lambda x:{
                             'fillColor': '#000000',
                             'fillOpacity': 0,
-                            'color' : '#000000',
-                            'weight': 0.7},
+                            'color' : '#FF0000',
+                            'weight': 1.5},
                         name="行政区域(出典：国土交通省)",
                         show=False,
-                        popup = folium.features.GeoJsonPopup(["市区町村名"])
+                       # popup = folium.features.GeoJsonPopup(["市区町村名"])
                        ).add_to(map)
 
 # TACポリゴン
@@ -347,8 +349,8 @@ folium.features.GeoJson(data=TAC,
                         style_function = lambda feature:{
                             "fillColor": feature["properties"]["カラー区分"],
                             'fillOpacity': 0.65,
-                            "stroke": False,
-                        },
+                            "stroke": False
+                            },
                         name="TAC(行政区域データ(国土交通省)を加工)",
                         show=False,
                         popup = folium.features.GeoJsonPopup(["TAC"])
