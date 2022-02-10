@@ -296,7 +296,7 @@ for _, r in this_month_df.iterrows():
 # 楽天モバイルエリア4Gマップレイヤー(予定1)
 folium.raster_layers.TileLayer(
     name="(4G)楽天モバイルエリア(予定1)",
-    tiles='https://gateway-api.global.rakuten.com/dsd/geoserver/4g2m/mno_coverage_map/gwc/service/gmaps?LAYERS=mno_coverage_map:all_map&FORMAT=image/png&TRANSPARENT=TRUE&x={x}&y={y}&zoom={z}',
+    tiles='https://gateway-api.global.rakuten.com/dsd/geoserver/4g/mno_coverage_map/gwc/service/gmaps?LAYERS=mno_coverage_map:all_map&FORMAT=image/png&TRANSPARENT=TRUE&x={x}&y={y}&zoom={z}',
     fmt='image/png',
     attr="<a href='https://network.mobile.rakuten.co.jp/'>楽天モバイル</a>",
     tms=False,
