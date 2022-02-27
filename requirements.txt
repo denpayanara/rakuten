@@ -1,2 +1,4 @@
+python-dateutil
 folium
+pandas
 simplekml
