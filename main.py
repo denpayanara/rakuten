@@ -333,16 +333,18 @@ folium.raster_layers.TileLayer(
 ).add_to(map)
 
 # 行政区域レイヤー
-folium.features.GeoJson(data=Area,
-                        style_function = lambda x:{
-                            'fillColor': '#000000',
-                            'fillOpacity': 0,
-                            'color' : '#FF0000',
-                            'weight': 1.5},
-                        name="行政区域(出典：国土交通省)",
-                        show=False,
-                       # popup = folium.features.GeoJsonPopup(["市区町村名"])
-                       ).add_to(map)
+Geo_Area = folium.features.GeoJson(
+    data=Area,
+    style_function = lambda x:{
+        'fillColor': '#000000',
+        'fillOpacity': 0,
+        'color' : '#FF0000',
+        'weight': 1.5
+        },
+    name="行政区域(出典：国土交通省)",
+    show=False,
+    # popup = folium.features.GeoJsonPopup(["市区町村名"])
+).add_to(map)
 
 # TACポリゴン
 folium.features.GeoJson(data=TAC,
@@ -371,6 +373,15 @@ folium.Marker(location = [ 34.6304528, 135.6563892 ],
     sticky=False),
     icon = folium.features.CustomIcon(icon_mail,icon_size = (45, 45)
     )).add_to(mail_group)
+
+# 市区町村名の検索
+plugins.Search(
+    layer=Geo_Area,
+    geom_type="Point",
+    position="topleft",
+    placeholder="市区町村名",
+    search_label="市区町村名",
+).add_to(map)
 
 # フルスクリーン
 folium.plugins.Fullscreen(position = 'bottomright').add_to(map)
