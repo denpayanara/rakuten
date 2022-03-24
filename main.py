@@ -213,16 +213,19 @@ for i, r in df.iterrows():
     else:
         icon_image = icon_not_set
 
-    folium.Marker(
-        location = [ r["lat"], r["lng"] ],
-        popup = folium.Popup(html, max_width=300),
-        icon = folium.features.CustomIcon(
-        icon_image,
-        icon_size = (30, 30)
+    cell_group.add_child(
+        folium.Marker(
+            location = [ r["lat"], r["lng"] ],
+            popup = folium.Popup(html, max_width=300),
+            icon = folium.features.CustomIcon(
+                icon_image,
+                icon_size = (30, 30),
+            ),
+            search = r["eNB-LCID"]
         )
-    ).add_to(cell_group)
+    )
 
-cell_group.add_to(map)
+# cell_group.add_to(map)
 
 # 半径710mサークル
 for _, r in df[ (df["設置形態"] != "屋内局") & (df["アイコン種別"] != "4G_OK(未知局)") ].iterrows():
@@ -375,12 +378,17 @@ folium.Marker(location = [ 34.6304528, 135.6563892 ],
     )).add_to(mail_group)
 
 # 市区町村名の検索
+# plugins.Search(layer = Geo_Area,geom_type = "Point",position = "topleft",placeholder = "市区町村名",search_label = "市区町村名",collapsed = True).add_to(map)
+
+# eNB_LCIDの検索
 plugins.Search(
-    layer=Geo_Area,
-    geom_type="Point",
-    position="topleft",
-    placeholder="市区町村名",
-    search_label="市区町村名",
+    layer = cell_group,
+    search_zoom = 15,
+    search_label = 'search',
+    geom_type  = 'Point',
+    placeholder = 'eNB-LCID',
+    collapsed = True
+
 ).add_to(map)
 
 # フルスクリーン
