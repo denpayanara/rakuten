@@ -8,6 +8,7 @@ import urllib.parse
 from dateutil.relativedelta import relativedelta
 import folium
 from folium import plugins
+from folium_vector import VectorGridProtobuf
 import pandas as pd
 import simplekml
 
@@ -114,6 +115,8 @@ antena_group = folium.FeatureGroup(name="(4G)アンテナ有無", show=False).ad
 mail_group =folium.FeatureGroup(name="情報提供", show=True).add_to(map)
 this_year_group = folium.FeatureGroup(name=f'今年開局({this_year_ready_ok_count}件)', show=False).add_to(map)
 this_month_group = folium.FeatureGroup(name=f'今月開局({this_month_ready_ok_count}件)', show=False).add_to(map)
+roaming_area_group = folium.FeatureGroup(name='ローミング提供エリア(出典:KDDI株式会社)', show=False).add_to(map)
+
 
 # アイコン( folium & simplekml共通 )
 icon_ok = "./icon/4G_OK.png"
@@ -335,6 +338,20 @@ folium.raster_layers.TileLayer(
     show=False,
 ).add_to(map)
 
+# auローミングサービス提供エリア
+options = {
+    "vectorTileLayerStyles": {
+        "rakuten": {
+            "fill": True,
+            "weight": 0,
+            "fillColor": "orange",
+            "fillOpacity": 0.4,
+        },
+    }
+}
+
+VectorGridProtobuf("https://area.uqcom.jp/api2/rakuten/{z}/{x}/{y}.mvt", "ローミング提供エリア", options).add_to(roaming_area_group)
+
 # 行政区域レイヤー
 Geo_Area = folium.features.GeoJson(
     data=Area,
@@ -344,7 +361,7 @@ Geo_Area = folium.features.GeoJson(
         'color' : '#FF0000',
         'weight': 1.5
         },
-    name="行政区域(出典：国土交通省)",
+    name="行政区域(出典:国土交通省)",
     show=False,
     # popup = folium.features.GeoJsonPopup(["市区町村名"])
 ).add_to(map)
@@ -356,7 +373,7 @@ folium.features.GeoJson(data=TAC,
                             'fillOpacity': 0.65,
                             "stroke": False
                             },
-                        name="TAC(行政区域データ(国土交通省)を加工)",
+                        name="TAC(国土交通省の行政区域データを加工)",
                         show=False,
                         popup = folium.features.GeoJsonPopup(["TAC"])
                        ).add_to(map)
