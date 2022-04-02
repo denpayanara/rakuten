@@ -43,7 +43,7 @@ now = datetime.datetime.utcnow() + datetime.timedelta(hours=9)
 today = now.date()
 
 # df['確認日']から「今月」を抽出したDataFrame
-this_month_df =  df[( df['確認日'] >= now.replace(day=1) ) & (df['確認日'] <= now + relativedelta(day=1, months=1, days=-1)) ]
+this_month_df =  df[( df['確認日'].dt.date >= today.replace(day=1) ) & (df['確認日'].dt.date <= today + relativedelta(day=1, months=1, days=-1)) ]
 
 # 今月開局数
 this_month_ready_ok_count = (this_month_df.query("開局状況 == ['OK', 'OK(仮)', 'OK(未知局)']").count())['確認日']
