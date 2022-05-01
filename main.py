@@ -338,6 +338,19 @@ folium.raster_layers.TileLayer(
     show=False,
 ).add_to(map)
 
+# au 4G LTE (1.7GHz)エリア
+folium.raster_layers.TileLayer(
+    name="au 4G LTE (1.7GHz)",
+    tiles='https://area.uqcom.jp/api2/F_4G_17/{z}/{x}/{y}.png',
+    fmt='image/png',
+    attr="<a href='https://www.au.com/'>KDDI株式会社</a>",
+    tms=False,
+    overlay=True,
+    control=True,
+    opacity=0.7,
+    show=False,
+).add_to(map)
+
 # auローミングサービス提供エリア
 options = {
     "vectorTileLayerStyles": {
