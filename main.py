@@ -5,10 +5,12 @@ import datetime
 import pathlib
 import urllib.parse
 
+import branca.colormap as cm
 from dateutil.relativedelta import relativedelta
 import folium
 from folium import plugins
 from folium_vector import VectorGridProtobuf
+import geopandas as gpd
 import pandas as pd
 import simplekml
 
@@ -390,6 +392,36 @@ folium.features.GeoJson(data=TAC,
                         show=False,
                         popup = folium.features.GeoJsonPopup(["TAC"])
                        ).add_to(map)
+
+# 人口メッシュ
+gdf_mesh = gpd.read_file('500m_mesh_suikei_2018_shape_29.zip')
+
+# colormap
+colormap = cm.linear.OrRd_09.scale(gdf_mesh['PTN_2015'].min(), gdf_mesh['PTN_2015'].max()).to_step(len(gdf_mesh['PTN_2015'].unique()))
+
+style_function = lambda x: {
+    'fillColor': colormap(x['properties']['PTN_2015']),
+    'color': '',
+    'weight': 0.0001,
+    'fillOpacity': 0.75
+}
+
+folium.GeoJson(
+    data=gdf_mesh.to_json(),
+    style_function=style_function,
+    tooltip=folium.features.GeoJsonTooltip(
+        fields=['PTN_2015'],
+        aliases=['人口(単位: 人)'],
+        localize=True
+    ),
+    name="500m人口メッシュ",
+    show=False,
+    # smooth_factor=1,
+    embed=True
+).add_to(map)
+
+# 凡例
+# colormap.add_to(map)
 
 # 情報提供フォーム
 html_description = f'<p>このマップは皆さまからの情報により成り立っております。<br>お手数ですが情報をお寄せ下さいませ(匿名厳守)</p>\
