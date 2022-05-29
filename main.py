@@ -5,6 +5,7 @@ import datetime
 import pathlib
 import urllib.parse
 
+import branca
 # import branca.colormap as cm
 from dateutil.relativedelta import relativedelta
 import folium
@@ -135,10 +136,15 @@ antena_ng = "./icon/antena_ng.png"
 icon_mail = "./icon/mail.png"
 
 for i, r in df.iterrows():
-
+    
     # tweetリンク有無の処理
     if r["tweet"] != "":
-        tweet_link = f' <a href="{r["tweet"]}">ツイートへ</a><br>'
+        tweet_link = f'''
+<blockquote class="twitter-tweet">
+    <a href="{r["tweet"]}"></a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'''
+
     else:
         tweet_link = ""
 
@@ -169,18 +175,75 @@ for i, r in df.iterrows():
         else ""
     )
     
-    # popupの説明内容
-    html = f'名称: {r["名称"]}<br>\
-            eNB-LCID: {r["eNB-LCID"]}<br>\
-            備考: {r["備考"]}<br>\
-            設置形態: {r["設置形態"]}<br>\
-            アンテナ有無: {r["アンテナ有無"]}<br>\
-            電力線: {r["電力線"]}<br>\
-            光回線: {r["光回線"]}<br>\
-            確認日: {r["確認日_str"]}<br>\
-            {tweet_link}\
-            {tag_twit}\
-            <a href="{r["URL"]}">Googleマップへ</a><br>'
+    # folium popup
+    css = '''
+    <style>
+        h4 {
+            font-size: 25px;
+            text-align: center;
+            margin-bottom: 0;
+        }
+
+        table,
+        td {
+            font-size: 20px;
+            text-align: center;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 250px;
+        }
+
+        table th, table td {
+            border: solid 1px black;
+        }
+
+    </style>
+    '''
+
+    html = f'''
+            <h4>{r["名称"]}</h4>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>eNB-LCID</td>
+                        <td>{r["eNB-LCID"]}</td>
+                    </tr>
+                    <tr>
+                        <td>備考</td>
+                        <td>{r["備考"]}</td>
+                    </tr>
+                    <tr>
+                        <td>設置形態</td>
+                        <td>{r["設置形態"]}</td>
+                    </tr>
+                    <tr>
+                        <td>電力線</td>
+                        <td>{r["電力線"]}</td>
+                    </tr>
+                    <tr>
+                        <td>光回線</td>
+                        <td>{r["光回線"]}</td>
+                    </tr>
+                    <tr>
+                        <td>確認日</td>
+                        <td>{r["確認日_str"]}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><a href="{r["URL"]}">Googleマップへ</a></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">{tag_twit}</td>
+                    </tr>
+                </tbody>
+            </table>'''
+
+    html += tweet_link
+
+    html += css
+
+    iframe = branca.element.IFrame(html=html, width=300, height=500)
     
     if r["アイコン種別"] == "4G_OK":
         icon_image = icon_ok
@@ -221,7 +284,7 @@ for i, r in df.iterrows():
     cell_group.add_child(
         folium.Marker(
             location = [ r["lat"], r["lng"] ],
-            popup = folium.Popup(html, max_width=300),
+            popup = folium.Popup(iframe, max_width=300),
             icon = folium.features.CustomIcon(
                 icon_image,
                 icon_size = (30, 30),
