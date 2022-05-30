@@ -170,7 +170,7 @@ for i, r in df.iterrows():
     )
 
     tag_twit = (
-        f'<a href="{url_twit}" target="_blank">開局報告をする</a><br>'
+        f'<tr><td colspan="2"><a href="{url_twit}" target="_blank">開局報告をする</a></td></tr>'
         if r["開局状況"] != 'OK'
         else ""
     )
@@ -202,6 +202,9 @@ for i, r in df.iterrows():
     </style>
     '''
 
+    # GoogleマップURLリンク開かない
+    # <tr><td colspan="2"><a href="{r["URL"]}">Googleマップへ</a></td></tr>
+    
     html = f'''
             <h4>{r["名称"]}</h4>
             <table>
@@ -230,12 +233,7 @@ for i, r in df.iterrows():
                         <td>確認日</td>
                         <td>{r["確認日_str"]}</td>
                     </tr>
-                    <tr>
-                        <td colspan="2"><a href="{r["URL"]}">Googleマップへ</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">{tag_twit}</td>
-                    </tr>
+                    {tag_twit}
                 </tbody>
             </table>'''
 
