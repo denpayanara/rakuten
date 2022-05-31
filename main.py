@@ -57,12 +57,6 @@ this_year_df = df[(df['確認日'] >= datetime.date(now.year, 1, 1).strftime('%Y
 # 今年開局数
 this_year_ready_ok_count = (this_year_df.query("開局状況 == ['OK', 'OK(仮)', 'OK(未知局)']").count())['確認日']
 
-# 行政区域_geojsonファイルの読み込み
-Area = "行政区域.geojson"
-
-# TAC_geojsonファイルの読み込み
-TAC = "TAC.geojson"
-
 # foliumでマップ作成
 
 # ベースマップ
@@ -201,9 +195,6 @@ for i, r in df.iterrows():
 
     </style>
     '''
-
-    # GoogleマップURLリンク開かない
-    # <tr><td colspan="2"><a href="{r["URL"]}">Googleマップへ</a></td></tr>
     
     html = f'''
             <h4>{r["名称"]}</h4>
@@ -232,6 +223,9 @@ for i, r in df.iterrows():
                     <tr>
                         <td>確認日</td>
                         <td>{r["確認日_str"]}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><a href="{r["URL"]}" target="_blank">Googleマップへ</a></td>
                     </tr>
                     {tag_twit}
                 </tbody>
@@ -430,7 +424,7 @@ VectorGridProtobuf("https://area.uqcom.jp/api2/rakuten/{z}/{x}/{y}.mvt", "ロー
 
 # 行政区域レイヤー
 Geo_Area = folium.features.GeoJson(
-    data=Area,
+    data='行政区域.geojson',
     style_function = lambda x:{
         'fillColor': '#000000',
         'fillOpacity': 0,
@@ -443,7 +437,7 @@ Geo_Area = folium.features.GeoJson(
 ).add_to(map)
 
 # TACポリゴン
-folium.features.GeoJson(data=TAC,
+folium.features.GeoJson(data='TAC.geojson',
                         style_function = lambda feature:{
                             "fillColor": feature["properties"]["カラー区分"],
                             'fillOpacity': 0.65,
