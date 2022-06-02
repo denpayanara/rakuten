@@ -412,7 +412,10 @@ Geo_Area = folium.features.GeoJson(
         },
     name="行政区域(出典:国土交通省)",
     show=False,
-    popup = folium.features.GeoJsonPopup(["市区町村名"])
+    popup = folium.features.GeoJsonPopup(
+        fields = ['郡・政令都', '市区町村名'],
+        aliases = ['郡・政令都市名', '市区町村名']
+    )
 ).add_to(map)
 
 # TACポリゴン
