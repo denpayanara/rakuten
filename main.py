@@ -9,6 +9,7 @@ import branca
 from dateutil.relativedelta import relativedelta
 import folium
 from folium import plugins
+from pygments import highlight
 from folium_vector import VectorGridProtobuf
 import pandas as pd
 import simplekml
@@ -403,19 +404,25 @@ VectorGridProtobuf("https://area.uqcom.jp/api2/rakuten/{z}/{x}/{y}.mvt", "ロー
 
 # 行政区域レイヤー
 Geo_Area = folium.features.GeoJson(
-    data='行政区域.geojson',
+    data = '行政区域.geojson',
     style_function = lambda x:{
         'fillColor': '#000000',
         'fillOpacity': 0,
         'color' : '#FF0000',
         'weight': 1.5
-        },
-    name="行政区域(出典:国土交通省)",
-    show=False,
+    },
+    highlight_function = lambda x:{
+        'fillColor': '#000000',
+        'fillOpacity': 0,
+        'color' : '#FF0000',
+        'weight': 4
+    },
+    name = "行政区域(出典:国土交通省)",
+    show = False,
     popup = folium.features.GeoJsonPopup(
-        fields = ['郡・政令都', '市区町村名'],
+        fields = ['N03_003', 'N03_004'],
         aliases = ['郡・政令都市名', '市区町村名']
-    )
+    ),
 ).add_to(map)
 
 # TACポリゴン
@@ -425,9 +432,9 @@ folium.features.GeoJson(data = 'TAC.geojson',
         'fillOpacity': 0.65,
         "stroke": False
     },
-    name= "TAC(国土交通省の行政区域データを加工)",
-    show= False,
-    popup = folium.features.GeoJsonPopup(fields = ['TAC'], aliases = ['TAC'])
+    name = "TAC(国土交通省の行政区域データを加工)",
+    show = False,
+    popup = folium.features.GeoJsonPopup(fields = ['TAC'], aliases = ['TAC']),
 ).add_to(map)
 
 # 情報提供フォーム
