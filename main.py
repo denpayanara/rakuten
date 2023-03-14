@@ -9,7 +9,7 @@ import branca
 from dateutil.relativedelta import relativedelta
 import folium
 from folium import plugins
-from folium_vectorgrid import VectorGridProtobuf
+# from folium_vectorgrid import VectorGridProtobuf
 import pandas as pd
 import simplekml
 
@@ -388,18 +388,19 @@ folium.raster_layers.TileLayer(
 ).add_to(map)
 
 # auローミングサービス提供エリア
-options = {
-    "vectorTileLayerStyles": {
-        "rakuten": {
-            "fill": True,
-            "weight": 0,
-            "fillColor": "orange",
-            "fillOpacity": 0.4,
-        },
-    }
-}
+# pip install時にエラーが出るので停止
+# options = {
+#     "vectorTileLayerStyles": {
+#         "rakuten": {
+#             "fill": True,
+#             "weight": 0,
+#             "fillColor": "orange",
+#             "fillOpacity": 0.4,
+#         },
+#     }
+# }
 
-VectorGridProtobuf("https://area.uqcom.jp/api2/rakuten/{z}/{x}/{y}.mvt", "ローミング提供エリア", options).add_to(roaming_area_group)
+# VectorGridProtobuf("https://area.uqcom.jp/api2/rakuten/{z}/{x}/{y}.mvt", "ローミング提供エリア", options).add_to(roaming_area_group)
 
 # 行政区域レイヤー
 Geo_Area = folium.features.GeoJson(
