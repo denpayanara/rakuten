@@ -9,7 +9,7 @@ import branca
 from dateutil.relativedelta import relativedelta
 import folium
 from folium import plugins
-# from folium_vectorgrid import VectorGridProtobuf
+from folium_vectorgrid import VectorGridProtobuf
 import pandas as pd
 import simplekml
 
