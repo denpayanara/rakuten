@@ -3,4 +3,4 @@ python-dateutil
 folium
 pandas
 simplekml
-
+# git+https://github.com/iwpnd/folium-vectorgrid.git
