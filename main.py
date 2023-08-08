@@ -335,10 +335,10 @@ for _, r in this_month_df.iterrows():
             icon = folium.features.CustomIcon(antena_ok, icon_size = (30, 30))
         ).add_to(this_month_group)
 
-# 楽天モバイルエリア4Gマップレイヤー(予定1)
+# 楽天モバイルエリア4Gマップレイヤー
 folium.raster_layers.TileLayer(
-    name="(4G)楽天モバイルエリア(予定1)",
-    tiles='https://area-map.mobile.rakuten.co.jp/dsd/geoserver/4g2m/mno_coverage_map/gwc/service/gmaps?LAYERS=mno_coverage_map:all_map&FORMAT=image/png&TRANSPARENT=TRUE&x={x}&y={y}&zoom={z}',
+    name="(4G)楽天モバイルエリア",
+    tiles='https://area-map.mobile.rakuten.co.jp/4gs/geoserver/4g/mno_coverage_map/gwc/service/gmaps?LAYERS=mno_coverage_map:all_map&FORMAT=image/png&TRANSPARENT=TRUE&x={x}&y={y}&zoom={z}',
     fmt='image/png',
     attr="<a href='https://network.mobile.rakuten.co.jp/'>楽天モバイル</a>",
     tms=False,
@@ -348,9 +348,9 @@ folium.raster_layers.TileLayer(
     show=False,
 ).add_to(map)
 
-# 楽天モバイルエリア4Gマップレイヤー(予定2)
+# 楽天モバイルエリア4Gマップレイヤー(予定)
 folium.raster_layers.TileLayer(
-    name="(4G)楽天モバイルエリア(予定2)",
+    name="(4G)楽天モバイルエリア(予定)",
     tiles='https://area-map.mobile.rakuten.co.jp/dsd/geoserver/4g4m/mno_coverage_map/gwc/service/gmaps?LAYERS=mno_coverage_map:all_map&FORMAT=image/png&TRANSPARENT=TRUE&x={x}&y={y}&zoom={z}',
     fmt='image/png',
     attr="<a href='https://network.mobile.rakuten.co.jp/'>楽天モバイル</a>",
