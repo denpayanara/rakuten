@@ -131,9 +131,13 @@ for i, r in df.iterrows():
     
     # tweetリンク有無の処理
     if r["tweet"] != "":
+
+        # x.comをtwitter.comに置換
+        rep_tweet = r["tweet"].replace('https://x.com/', 'https://twitter.com/')
+
         tweet_link = f'''
                         <blockquote class="twitter-tweet">
-                            <a href="{r["tweet"]}"></a>
+                            <a href="{rep_tweet}"></a>
                         </blockquote>
                         <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                     '''
@@ -147,7 +151,7 @@ for i, r in df.iterrows():
         [
             f'#奈良県 {r["名称_3"]}にて #楽天モバイル 基地局が開局しました。',
             'eNB-LCID:',
-            f'【ツイート】\r\n{r["tweet"]}',
+            f'【ツイート】\r\n{rep_tweet}',
             f'【置局場所】\r\n{r["URL"]}',
             f'管理用:{r["未開局番号"]}\r\n@ZSCCli0y6RMxYmU',
 
