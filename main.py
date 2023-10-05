@@ -431,7 +431,7 @@ Geo_Area = folium.features.GeoJson(
 # TACポリゴン
 folium.features.GeoJson(data = 'TAC.geojson',
     style_function = lambda feature:{
-        "fillColor": '#ffa8a9' if feature["properties"]["TAC"] == '30721' else '#69cafc' if feature["properties"]["TAC"] == '30722' else '#000000',
+        "fillColor": '#ffa8a9' if feature["properties"]["TAC"] == 30721 else '#69cafc' if feature["properties"]["TAC"] == 30722 else '#000000',
         'fillOpacity': 0.65,
         "stroke": False
     },
