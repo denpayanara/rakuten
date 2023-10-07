@@ -437,7 +437,7 @@ folium.features.GeoJson(data = 'TAC.geojson',
     },
     name = "TAC(国土交通省の行政区域データを加工)",
     show = False,
-    popup = folium.features.GeoJsonPopup(fields = ['TAC'], aliases = str(['TAC'])),
+    popup = folium.features.GeoJsonPopup(fields = ['TAC'], aliases = ['TAC']),
 ).add_to(map)
 
 # 情報提供フォーム
