@@ -440,6 +440,18 @@ folium.features.GeoJson(data = 'TAC.geojson',
     popup = folium.features.GeoJsonPopup(fields = ['TAC'], aliases = ['TAC']),
 ).add_to(map)
 
+# 基地局設置情報ポリゴン
+folium.features.GeoJson(data = '開局エリア.geojson',
+    style_function = lambda feature:{
+        "fillColor": '#ffa8a9' if feature["properties"]["Type"] == 4G else '#69cafc',
+        'fillOpacity': 0.65,
+        "stroke": False
+    },
+    name = "開局エリア",
+    show = False,
+    popup = folium.features.GeoJsonPopup(fields = ['S_NAME'], aliases = ['S_NAME']),
+).add_to(map)
+
 # 情報提供フォーム
 html_description = f'<p>このマップは皆さまからの情報により成り立っております。<br>お手数ですが情報をお寄せ下さいませ(匿名厳守)</p>\
                     <p style="text-align:center"><a href="https://twitter.com/ZSCCli0y6RMxYmU" target="_blank">管理者Twitterアカウントへ</a></p>\
