@@ -441,7 +441,7 @@ folium.features.GeoJson(data = 'TAC.geojson',
 ).add_to(map)
 
 # 基地局設置情報ポリゴン
-folium.features.GeoJson(data = '開局エリア.geojson',
+folium.features.GeoJson(data = 'https://github.com/denpayanara/openarea/blob/main/A002005212020DDSWC29.geojson',
     style_function = lambda feature:{
         "fillColor": '#ffa8a9' if feature["properties"]["Type"] == "4G" else '#69cafc',
         'fillOpacity': 0.65,
