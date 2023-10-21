@@ -445,7 +445,8 @@ folium.features.GeoJson(data = '開局エリア.geojson',
     style_function = lambda feature:{
         "fillColor": '#ffa8a9' if feature["properties"]["Type"] == "4G" else '#69cafc',
         'fillOpacity': 0.65,
-        "stroke": False
+        "stroke": True,
+        "color": '#ff0000'
     },
     name = "開局エリア",
     show = False,
