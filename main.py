@@ -450,7 +450,7 @@ folium.features.GeoJson(data = '開局エリア.geojson',
     },
     name = "開局エリア",
     show = False,
-    popup = folium.features.GeoJsonPopup(fields = ['Type', 'Date', 'addr'], aliases = ['4G/5G', '日付', '所在地']),
+    popup = folium.features.GeoJsonPopup(fields = ['Type', 'Date', 'addr', 'ID'], aliases = ['4G/5G', '日付', '所在地', 'SARFID']),
 ).add_to(map)
 
 # 情報提供フォーム
