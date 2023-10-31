@@ -448,7 +448,7 @@ folium.features.GeoJson(data = 'https://raw.githubusercontent.com/denpayanara/op
         "stroke": True,
         "color": '#ff0000'
     },
-    name = "開局エリア",
+    name = "基地局設置情報による対象エリア",
     show = False,
     popup = folium.features.GeoJsonPopup(fields = ['Type', 'Date', 'addr', 'ID'], aliases = ['4G/5G', '日付', '所在地', 'SARFID']),
 ).add_to(map)
