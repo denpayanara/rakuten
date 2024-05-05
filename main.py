@@ -65,12 +65,11 @@ map = folium.Map(
     control_scale = True
 )
 
-# Googleマップ標準
+# 国土地理院(白地図)
 folium.raster_layers.TileLayer(
-    'https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
-    subdomains = ['mt0','mt1','mt2','mt3'],
-    name = "Google Map",
-    attr = "<a href='https://developers.google.com/maps/documentation' target='_blank'>Google Map</a>"
+    'https://cyberjapandata.gsi.go.jp/xyz/blank/{z}/{x}/{y}.png',
+    name = "国土地理院(白地図)",
+    attr = "<a href='https://maps.gsi.go.jp/development/ichiran.html'>国土地理院</a>"
 ).add_to(map)
 
 # Googleマップ(航空写真)
@@ -81,11 +80,12 @@ folium.raster_layers.TileLayer(
     attr = "<a href='https://developers.google.com/maps/documentation' target='_blank'>Google Map</a>"
 ).add_to(map)
 
-# 国土地理院(白地図)
+# Googleマップ標準
 folium.raster_layers.TileLayer(
-    'https://cyberjapandata.gsi.go.jp/xyz/blank/{z}/{x}/{y}.png',
-    name = "国土地理院(白地図)",
-    attr = "<a href='https://maps.gsi.go.jp/development/ichiran.html'>国土地理院</a>"
+    'https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
+    subdomains = ['mt0','mt1','mt2','mt3'],
+    name = "Google Map",
+    attr = "<a href='https://developers.google.com/maps/documentation' target='_blank'>Google Map</a>"
 ).add_to(map)
 
 # 国土地理院(色別標高図)
