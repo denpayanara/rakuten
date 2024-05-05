@@ -89,18 +89,18 @@ folium.raster_layers.TileLayer(
 ).add_to(map)
 
 # 国土地理院(色別標高図)
-folium.raster_layers.TileLayer(
-    'https://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png',
-    name = "国土地理院(色別標高図)",
-    attr = "<a href='https://maps.gsi.go.jp/development/ichiran.html'>国土地理院 海域部は海上保安庁海洋情報部の資料を使用して作成</a>"
-).add_to(map)
+# folium.raster_layers.TileLayer(
+#     'https://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png',
+#     name = "国土地理院(色別標高図)",
+#     attr = "<a href='https://maps.gsi.go.jp/development/ichiran.html'>国土地理院 海域部は海上保安庁海洋情報部の資料を使用して作成</a>"
+# ).add_to(map)
 
 # 国土地理院(陰影起伏図)
-folium.raster_layers.TileLayer(
-    'https://cyberjapandata.gsi.go.jp/xyz/hillshademap/{z}/{x}/{y}.png',
-    name = "国土地理院(陰影起伏図)",
-    attr = "<a href='https://maps.gsi.go.jp/development/ichiran.html'>国土地理院</a>"
-).add_to(map)
+# folium.raster_layers.TileLayer(
+#     'https://cyberjapandata.gsi.go.jp/xyz/hillshademap/{z}/{x}/{y}.png',
+#     name = "国土地理院(陰影起伏図)",
+#     attr = "<a href='https://maps.gsi.go.jp/development/ichiran.html'>国土地理院</a>"
+# ).add_to(map)
 
 circle_group = folium.FeatureGroup(name="半径710m", show=False).add_to(map)
 unknown_circle_group = folium.FeatureGroup(name="未知局サークル(TA値×151)").add_to(map)
