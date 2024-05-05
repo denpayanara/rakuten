@@ -505,6 +505,9 @@ map.save(str(map_path))
 # simplekmlおまじない
 kml = simplekml.Kml(name="Nara")
 
+# マイマップと仕様を揃えるためにKMLのDocument->nameにマップ名を設定
+kml.document.name = "楽天モバイル基地局（奈良県）"
+
 # アイコン設定
 ok_img = kml.addfile(icon_ok)
 ng_img = kml.addfile(icon_ng)
