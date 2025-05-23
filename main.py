@@ -339,57 +339,71 @@ for _, r in this_month_df.iterrows():
             icon = folium.features.CustomIcon(antena_ok, icon_size = (30, 30))
         ).add_to(this_month_group)
 
-# 楽天モバイルエリア4Gマップレイヤー
-folium.raster_layers.TileLayer(
-    name="(4G)楽天モバイルエリア",
-    tiles='https://area-map.mobile.rakuten.co.jp/4gs/geoserver/4g/mno_coverage_map/gwc/service/gmaps?LAYERS=mno_coverage_map:all_map&FORMAT=image/png&TRANSPARENT=TRUE&x={x}&y={y}&zoom={z}',
+# 楽天モバイル5Gエリアマップレイヤー（WMS）
+folium.raster_layers.WmsTileLayer(
+    url='https://area-map.rmb-ss.jp/5g',
+    layers='5g',
+    name='(5G)楽天モバイルエリア',
     fmt='image/png',
-    attr="<a href='https://network.mobile.rakuten.co.jp/'>楽天モバイル</a>",
-    tms=False,
+    transparent=True,
     overlay=True,
     control=True,
     opacity=1.0,
-    show=False,
-).add_to(map)
-
-# 楽天モバイルエリア4Gマップレイヤー(予定)
-folium.raster_layers.TileLayer(
-    name="(4G)楽天モバイルエリア(予定)",
-    tiles='https://area-map.mobile.rakuten.co.jp/dsd/geoserver/4g4m/mno_coverage_map/gwc/service/gmaps?LAYERS=mno_coverage_map:all_map&FORMAT=image/png&TRANSPARENT=TRUE&x={x}&y={y}&zoom={z}',
-    fmt='image/png',
+    show=True,
     attr="<a href='https://network.mobile.rakuten.co.jp/'>楽天モバイル</a>",
-    tms=False,
-    overlay=True,
-    control=True,
-    opacity=1.0,
-    show=False,
 ).add_to(map)
 
-# 楽天モバイルエリア5Gマップレイヤー
-folium.raster_layers.TileLayer(
-    name="(5G)楽天モバイルエリア",
-    tiles='https://area-map.mobile.rakuten.co.jp/5gs/geoserver/5g/mno_coverage_map/gwc/service/gmaps?LAYERS=mno_coverage_map:all_map&FORMAT=image/png&TRANSPARENT=TRUE&x={x}&y={y}&zoom={z}',
-    fmt='image/png',
-    attr="<a href='https://network.mobile.rakuten.co.jp/'>楽天モバイル</a>",
-    tms=False,
-    overlay=True,
-    control=True,
-    opacity=1.0,
-    show=False,
-).add_to(map)
+# # 楽天モバイルエリア4Gマップレイヤー
+# folium.raster_layers.TileLayer(
+#     name="(4G)楽天モバイルエリア",
+#     tiles='https://area-map.mobile.rakuten.co.jp/4gs/geoserver/4g/mno_coverage_map/gwc/service/gmaps?LAYERS=mno_coverage_map:all_map&FORMAT=image/png&TRANSPARENT=TRUE&x={x}&y={y}&zoom={z}',
+#     fmt='image/png',
+#     attr="<a href='https://network.mobile.rakuten.co.jp/'>楽天モバイル</a>",
+#     tms=False,
+#     overlay=True,
+#     control=True,
+#     opacity=1.0,
+#     show=False,
+# ).add_to(map)
 
-# au 4G LTE (1.7GHz)エリア
-folium.raster_layers.TileLayer(
-    name="au 4G LTE (1.7GHz)",
-    tiles='https://area.uqcom.jp/api2/F_4G_17/{z}/{x}/{y}.png',
-    fmt='image/png',
-    attr="<a href='https://www.au.com/'>KDDI株式会社</a>",
-    tms=False,
-    overlay=True,
-    control=True,
-    opacity=0.7,
-    show=False,
-).add_to(map)
+# # 楽天モバイルエリア4Gマップレイヤー(予定)
+# folium.raster_layers.TileLayer(
+#     name="(4G)楽天モバイルエリア(予定)",
+#     tiles='https://area-map.mobile.rakuten.co.jp/dsd/geoserver/4g4m/mno_coverage_map/gwc/service/gmaps?LAYERS=mno_coverage_map:all_map&FORMAT=image/png&TRANSPARENT=TRUE&x={x}&y={y}&zoom={z}',
+#     fmt='image/png',
+#     attr="<a href='https://network.mobile.rakuten.co.jp/'>楽天モバイル</a>",
+#     tms=False,
+#     overlay=True,
+#     control=True,
+#     opacity=1.0,
+#     show=False,
+# ).add_to(map)
+
+# # 楽天モバイルエリア5Gマップレイヤー
+# folium.raster_layers.TileLayer(
+#     name="(5G)楽天モバイルエリア",
+#     tiles='https://area-map.mobile.rakuten.co.jp/5gs/geoserver/5g/mno_coverage_map/gwc/service/gmaps?LAYERS=mno_coverage_map:all_map&FORMAT=image/png&TRANSPARENT=TRUE&x={x}&y={y}&zoom={z}',
+#     fmt='image/png',
+#     attr="<a href='https://network.mobile.rakuten.co.jp/'>楽天モバイル</a>",
+#     tms=False,
+#     overlay=True,
+#     control=True,
+#     opacity=1.0,
+#     show=False,
+# ).add_to(map)
+
+# # au 4G LTE (1.7GHz)エリア
+# folium.raster_layers.TileLayer(
+#     name="au 4G LTE (1.7GHz)",
+#     tiles='https://area.uqcom.jp/api2/F_4G_17/{z}/{x}/{y}.png',
+#     fmt='image/png',
+#     attr="<a href='https://www.au.com/'>KDDI株式会社</a>",
+#     tms=False,
+#     overlay=True,
+#     control=True,
+#     opacity=0.7,
+#     show=False,
+# ).add_to(map)
 
 # auローミングサービス提供エリア
 options = {
