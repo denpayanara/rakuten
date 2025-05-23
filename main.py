@@ -349,7 +349,7 @@ folium.raster_layers.WmsTileLayer(
     overlay=True,
     control=True,
     opacity=1.0,
-    show=True,
+    show=False,
     attr="<a href='https://network.mobile.rakuten.co.jp/'>楽天モバイル</a>",
 ).add_to(map)
 
