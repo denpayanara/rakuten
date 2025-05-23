@@ -409,7 +409,7 @@ folium.raster_layers.TileLayer(
 # auローミングサービス提供エリア
 options = {
     "vectorTileLayerStyles": {
-        "rakuten": {
+        "next_rakuten": {
             "fill": True,
             "weight": 0,
             "fillColor": "orange",
