@@ -110,7 +110,7 @@ antena_group = folium.FeatureGroup(name="(4G)アンテナ有無", show=False).ad
 mail_group =folium.FeatureGroup(name="情報提供", show=True).add_to(map)
 this_year_group = folium.FeatureGroup(name=f'今年開局({this_year_ready_ok_count}件)', show=False).add_to(map)
 this_month_group = folium.FeatureGroup(name=f'今月開局({this_month_ready_ok_count}件)', show=False).add_to(map)
-# roaming_area_group = folium.FeatureGroup(name='ローミング提供エリア(出典:KDDI株式会社)', show=False).add_to(map)
+roaming_area_group = folium.FeatureGroup(name='ローミング提供エリア(出典:KDDI株式会社)', show=False).add_to(map)
 
 
 # アイコン( folium & simplekml共通 )
@@ -406,19 +406,19 @@ folium.raster_layers.TileLayer(
     show=False,
 ).add_to(map)
 
-# # auローミングサービス提供エリア
-# options = {
-#     "vectorTileLayerStyles": {
-#         "rakuten": {
-#             "fill": True,
-#             "weight": 0,
-#             "fillColor": "orange",
-#             "fillOpacity": 0.4,
-#         },
-#     }
-# }
+# auローミングサービス提供エリア
+options = {
+    "vectorTileLayerStyles": {
+        "rakuten": {
+            "fill": True,
+            "weight": 0,
+            "fillColor": "orange",
+            "fillOpacity": 0.4,
+        },
+    }
+}
 
-# VectorGridProtobuf("https://area.uqcom.jp/api2/rakuten/{z}/{x}/{y}.mvt", "ローミング提供エリア", options).add_to(roaming_area_group)
+VectorGridProtobuf("https://area.uqcom.jp/api3/next_rakuten/{z}/{x}/{y}.mvt", "ローミング提供エリア", options).add_to(roaming_area_group)
 
 # 行政区域レイヤー
 Geo_Area = folium.features.GeoJson(
