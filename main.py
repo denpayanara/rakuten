@@ -343,7 +343,7 @@ for _, r in this_month_df.iterrows():
 folium.raster_layers.WmsTileLayer(
     url='https://area-map.rmb-ss.jp/5g',
     layers='5g',
-    name='(5G)楽天モバイルエリア',
+    name='楽天モバイルエリア(ローミング含む)',
     fmt='image/png',
     transparent=True,
     overlay=True,
