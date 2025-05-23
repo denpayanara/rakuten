@@ -405,19 +405,19 @@ folium.raster_layers.WmsTileLayer(
 #     show=False,
 # ).add_to(map)
 
-# auローミングサービス提供エリア
-options = {
-    "vectorTileLayerStyles": {
-        "rakuten": {
-            "fill": True,
-            "weight": 0,
-            "fillColor": "orange",
-            "fillOpacity": 0.4,
-        },
-    }
-}
+# # auローミングサービス提供エリア
+# options = {
+#     "vectorTileLayerStyles": {
+#         "rakuten": {
+#             "fill": True,
+#             "weight": 0,
+#             "fillColor": "orange",
+#             "fillOpacity": 0.4,
+#         },
+#     }
+# }
 
-VectorGridProtobuf("https://area.uqcom.jp/api2/rakuten/{z}/{x}/{y}.mvt", "ローミング提供エリア", options).add_to(roaming_area_group)
+# VectorGridProtobuf("https://area.uqcom.jp/api2/rakuten/{z}/{x}/{y}.mvt", "ローミング提供エリア", options).add_to(roaming_area_group)
 
 # 行政区域レイヤー
 Geo_Area = folium.features.GeoJson(
