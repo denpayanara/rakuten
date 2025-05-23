@@ -353,6 +353,20 @@ folium.raster_layers.WmsTileLayer(
     attr="<a href='https://network.mobile.rakuten.co.jp/'>楽天モバイル</a>",
 ).add_to(map)
 
+# 楽天モバイル自社エリアマップレイヤー（WMS）
+folium.raster_layers.WmsTileLayer(
+    url='https://area-map.rmb-ss.jp/turbo',
+    layers='turbo',
+    name='楽天モバイル自社エリア',
+    fmt='image/png',
+    transparent=True,
+    overlay=True,
+    control=True,
+    opacity=1.0,
+    show=False,
+    attr="<a href='https://network.mobile.rakuten.co.jp/'>楽天モバイル</a>",
+).add_to(map)
+
 # # 楽天モバイルエリア4Gマップレイヤー
 # folium.raster_layers.TileLayer(
 #     name="(4G)楽天モバイルエリア",
