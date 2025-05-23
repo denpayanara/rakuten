@@ -59,7 +59,7 @@ this_year_ready_ok_count = (this_year_df.query("開局状況 == ['OK', 'OK(仮)'
 
 # ベースマップ
 map = folium.Map(
-    tiles = 'None',
+    tiles = None,
     location = df[['lat', 'lng']].mean(axis=0).to_list(),
     zoom_start = 12,
     control_scale = True
