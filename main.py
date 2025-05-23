@@ -66,7 +66,7 @@ map = folium.Map(
 )
 
 # マップタイトル
-map.get_root().html.add_child(folium.Element('<title>楽天モバイル基地局マップ【奈良県版】</title>'))
+# map.get_root().html.add_child(folium.Element('<title>楽天モバイル基地局マップ【奈良県版】</title>'))
 
 # 国土地理院(白地図)
 folium.raster_layers.TileLayer(
