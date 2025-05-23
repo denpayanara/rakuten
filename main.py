@@ -59,11 +59,14 @@ this_year_ready_ok_count = (this_year_df.query("開局状況 == ['OK', 'OK(仮)'
 
 # ベースマップ
 map = folium.Map(
-    tiles = '楽天モバイル基地局マップ【奈良県版】',
+    tiles = 'None',
     location = df[['lat', 'lng']].mean(axis=0).to_list(),
     zoom_start = 12,
     control_scale = True
 )
+
+# マップタイトル
+map.get_root().html.add_child(folium.Element('<title>楽天モバイル基地局マップ【奈良県版】</title>'))
 
 # 国土地理院(白地図)
 folium.raster_layers.TileLayer(
