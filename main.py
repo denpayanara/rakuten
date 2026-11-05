@@ -460,17 +460,17 @@ Geo_Area = folium.features.GeoJson(
     ),
 ).add_to(map)
 
-# TACポリゴン
-folium.features.GeoJson(data = 'TAC.geojson',
-    style_function = lambda feature:{
-        "fillColor": '#ffa8a9' if feature["properties"]["TAC"] == 30721 else '#69cafc' if feature["properties"]["TAC"] == 30722 else '#000000',
-        'fillOpacity': 0.65,
-        "stroke": False
-    },
-    name = "TAC(国土交通省の行政区域データを加工)",
-    show = False,
-    popup = folium.features.GeoJsonPopup(fields = ['TAC'], aliases = ['TAC']),
-).add_to(map)
+# # TACポリゴン
+# folium.features.GeoJson(data = 'TAC.geojson',
+#     style_function = lambda feature:{
+#         "fillColor": '#ffa8a9' if feature["properties"]["TAC"] == 30721 else '#69cafc' if feature["properties"]["TAC"] == 30722 else '#000000',
+#         'fillOpacity': 0.65,
+#         "stroke": False
+#     },
+#     name = "TAC(国土交通省の行政区域データを加工)",
+#     show = False,
+#     popup = folium.features.GeoJsonPopup(fields = ['TAC'], aliases = ['TAC']),
+# ).add_to(map)
 
 # # 基地局設置情報ポリゴン
 # folium.features.GeoJson(data = 'https://raw.githubusercontent.com/denpayanara/openarea/main/data/開局エリア.geojson',
